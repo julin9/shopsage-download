@@ -4,83 +4,117 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>重置密码 · ShopSage</title>
+<link rel="icon" href="logo128.png" />
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-  :root { --brand:#1A56DB; --ink:#0f172a; --sub:#64748b; --line:#e2e8f0; --err:#e11d48; --ok:#0E7C66; }
-  * { box-sizing: border-box; }
-  body { margin:0; min-height:100vh; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Microsoft YaHei",Arial,sans-serif;
-         background:linear-gradient(160deg,#eef2ff 0%,#f8fafc 60%); display:flex; align-items:center; justify-content:center; padding:24px; color:var(--ink); }
-  .card { width:100%; max-width:400px; background:#fff; border-radius:18px; padding:32px 28px; box-shadow:0 18px 50px -12px rgba(26,86,219,.25); border:1px solid rgba(226,232,240,.8); }
-  .brand { display:flex; align-items:center; gap:10px; margin-bottom:22px; }
-  .brand .logo { width:40px; height:40px; border-radius:10px; background:#eff6ff; display:flex; align-items:center; justify-content:center; font-weight:900; color:var(--brand); font-size:20px; }
-  .brand .name { font-size:18px; font-weight:800; }
-  .brand .sub { font-size:11px; color:#94a3b8; margin-top:2px; }
-  h1 { font-size:20px; margin:2px 0 4px; }
-  .desc { font-size:12px; color:var(--sub); margin:0 0 20px; line-height:1.5; }
-  .field { margin-bottom:14px; }
-  .field label { display:block; font-size:12px; font-weight:600; color:#334155; margin-bottom:6px; }
-  .pw { position:relative; }
-  input { width:100%; padding:13px 42px 13px 14px; border:1px solid var(--line); border-radius:10px; font-size:14px; outline:none; transition:.15s; }
-  input:focus { border-color:var(--brand); box-shadow:0 0 0 3px rgba(26,86,219,.14); }
-  .eye { position:absolute; right:8px; top:50%; transform:translateY(-50%); border:none; background:none; cursor:pointer; font-size:16px; color:#94a3b8; padding:4px; }
-  .eye:hover { color:var(--brand); }
-  button.submit { width:100%; padding:13px; border:none; border-radius:10px; background:var(--brand); color:#fff; font-size:15px; font-weight:700; cursor:pointer; margin-top:6px; box-shadow:0 6px 16px rgba(26,86,219,.28); }
-  button.submit:disabled { opacity:.6; cursor:not-allowed; }
-  .msg { margin-top:14px; font-size:13px; min-height:20px; text-align:center; }
-  .msg.err { color:var(--err); } .msg.ok { color:var(--ok); }
-  .hint { margin-top:16px; font-size:11px; color:#94a3b8; text-align:center; line-height:1.6; }
-  .center { text-align:center; }
-  .done-ic { font-size:40px; margin-bottom:8px; }
+  :root{
+    --brand:#1A56DB; --brand-600:#1E4FD0; --brand-050:#EEF3FF;
+    --ink:#0F172A; --ink-2:#334155; --sub:#64748B; --muted:#94A3B8;
+    --line:#E2E8F0; --err:#E11D48; --err-bg:#FEF2F2; --ok:#0E7C66;
+    --ring:0 0 0 4px rgba(26,86,219,.14);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",Arial,sans-serif;
+    color:var(--ink); -webkit-font-smoothing:antialiased;
+    background:
+      radial-gradient(1200px 600px at 15% -10%, #E7EEFF 0%, rgba(231,238,255,0) 55%),
+      radial-gradient(900px 500px at 110% 10%, #EAF1FF 0%, rgba(234,241,255,0) 50%),
+      #F6F8FC;
+    display:flex; align-items:center; justify-content:center; padding:28px 18px;
+  }
+  .wrap{width:100%; max-width:420px}
+  .card{
+    background:#fff; border:1px solid rgba(226,232,240,.9); border-radius:20px;
+    padding:34px 30px 26px; box-shadow:0 24px 60px -20px rgba(15,23,42,.22), 0 8px 20px -12px rgba(26,86,219,.18);
+  }
+  .brand{display:flex; align-items:center; gap:12px; margin-bottom:26px}
+  .brand .logo{width:44px; height:44px; border-radius:12px; background:var(--brand-050); display:flex; align-items:center; justify-content:center; overflow:hidden; box-shadow:inset 0 0 0 1px rgba(26,86,219,.08)}
+  .brand .logo img{width:30px; height:30px; object-fit:contain}
+  .brand .name{font-size:18px; font-weight:800; letter-spacing:.2px; line-height:1.1}
+  .brand .tag{font-size:11px; color:var(--muted); margin-top:2px; letter-spacing:.3px}
+  .eyebrow{display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:700; color:var(--brand); background:var(--brand-050); padding:5px 10px; border-radius:999px; margin-bottom:12px}
+  h1{font-size:22px; font-weight:800; margin:2px 0 6px; letter-spacing:.2px}
+  .desc{font-size:13px; color:var(--sub); margin:0 0 18px; line-height:1.6}
+  .acct{display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--ink-2); background:#F8FAFC; border:1px solid var(--line); border-radius:10px; padding:9px 12px; margin-bottom:18px}
+  .acct .dot{width:7px; height:7px; border-radius:50%; background:var(--brand); flex:0 0 auto}
+  .acct b{font-weight:700; word-break:break-all}
+  .field{margin-bottom:15px}
+  .field label{display:block; font-size:12.5px; font-weight:600; color:var(--ink-2); margin-bottom:7px}
+  .pw{position:relative}
+  input{width:100%; padding:13px 44px 13px 14px; border:1px solid var(--line); border-radius:11px; font-size:14px; color:var(--ink); outline:none; background:#fff; transition:border-color .15s, box-shadow .15s}
+  input::placeholder{color:#AEB9C9}
+  input:focus{border-color:var(--brand); box-shadow:var(--ring)}
+  .eye{position:absolute; right:8px; top:50%; transform:translateY(-50%); width:30px; height:30px; display:inline-flex; align-items:center; justify-content:center; border:none; background:none; cursor:pointer; font-size:16px; color:var(--muted); border-radius:8px}
+  .eye:hover{color:var(--brand); background:var(--brand-050)}
+  .btn{width:100%; padding:14px; border:none; border-radius:11px; background:linear-gradient(180deg,var(--brand) 0%, var(--brand-600) 100%); color:#fff; font-size:15px; font-weight:700; cursor:pointer; margin-top:6px; box-shadow:0 10px 22px -8px rgba(26,86,219,.55); transition:filter .15s, transform .05s}
+  .btn:hover{filter:brightness(1.05)} .btn:active{transform:translateY(1px)}
+  .btn:disabled{opacity:.6; cursor:not-allowed; box-shadow:none}
+  .msg{margin-top:14px; font-size:13px; min-height:18px; text-align:center; font-weight:500}
+  .msg.err{color:var(--err)} .msg.ok{color:var(--ok)}
+  .foot{margin-top:22px; padding-top:16px; border-top:1px solid #F1F5F9; text-align:center; font-size:11px; color:var(--muted); line-height:1.7}
+  .foot a{color:var(--sub); text-decoration:none}
+  .center{text-align:center}
+  .badge{width:64px; height:64px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:6px auto 16px; font-size:30px}
+  .badge.ok{background:#E7F6F0; color:var(--ok)}
+  .badge.bad{background:#FEF3E7; color:#D97706}
+  .hide{display:none}
 </style>
 </head>
 <body>
-  <div class="card" id="card">
-    <div class="brand">
-      <div class="logo">S</div>
-      <div><div class="name">ShopSage</div><div class="sub">跨境电商经营助手</div></div>
-    </div>
-
-    <!-- 状态：等待输入新密码 -->
-    <div id="form-view">
-      <h1>设置新密码</h1>
-      <p class="desc">为你的 ShopSage 账号设置一个新密码，设置完成后回到插件用新密码登录即可。</p>
-      <div class="field">
-        <label>新密码</label>
-        <div class="pw">
-          <input id="pw1" type="password" placeholder="至少 6 位" autocomplete="new-password" />
-          <button type="button" class="eye" data-for="pw1">👁</button>
-        </div>
+  <div class="wrap">
+    <div class="card">
+      <div class="brand">
+        <div class="logo"><img src="logo128.png" alt="ShopSage" /></div>
+        <div><div class="name">ShopSage</div><div class="tag">AI 跨境经营中枢</div></div>
       </div>
-      <div class="field">
-        <label>确认新密码</label>
-        <div class="pw">
-          <input id="pw2" type="password" placeholder="再输一次" autocomplete="new-password" />
-          <button type="button" class="eye" data-for="pw2">👁</button>
+
+      <!-- 表单视图 -->
+      <div id="form-view">
+        <span class="eyebrow">🔒 账户安全</span>
+        <h1>设置新密码</h1>
+        <p class="desc">为你的 ShopSage 账号设置一个新密码。完成后回到 ShopSage 插件，用邮箱和新密码登录即可。</p>
+        <div class="acct"><span class="dot"></span><span>当前账号：<b id="acct-email">—</b></span></div>
+        <div class="field">
+          <label for="pw1">新密码</label>
+          <div class="pw">
+            <input id="pw1" type="password" placeholder="至少 6 位" autocomplete="new-password" />
+            <button type="button" class="eye" data-for="pw1" aria-label="显示密码">👁</button>
+          </div>
         </div>
+        <div class="field">
+          <label for="pw2">确认新密码</label>
+          <div class="pw">
+            <input id="pw2" type="password" placeholder="再输入一次" autocomplete="new-password" />
+            <button type="button" class="eye" data-for="pw2" aria-label="显示密码">👁</button>
+          </div>
+        </div>
+        <button class="btn" id="go">确认修改</button>
+        <div class="msg" id="msg"></div>
       </div>
-      <button class="submit" id="go">确认修改</button>
-      <div class="msg" id="msg"></div>
-      <div class="hint" id="hint"></div>
-    </div>
 
-    <!-- 状态：成功 -->
-    <div id="done-view" style="display:none;" class="center">
-      <div class="done-ic">✅</div>
-      <h1>密码已更新</h1>
-      <p class="desc">你的新密码已生效。回到 ShopSage 插件，用邮箱 + 新密码登录即可。</p>
-      <div class="hint">可以关闭本页面了。</div>
-    </div>
+      <!-- 成功视图 -->
+      <div id="done-view" class="center hide">
+        <div class="badge ok">✓</div>
+        <h1>密码已更新</h1>
+        <p class="desc">你的新密码已即时生效。回到 ShopSage 插件，用邮箱 + 新密码登录即可继续使用。</p>
+        <div class="foot">可以安全关闭本页面。</div>
+      </div>
 
-    <!-- 状态：链接无效 -->
-    <div id="bad-view" style="display:none;" class="center">
-      <div class="done-ic">⚠️</div>
-      <h1>链接无效或已过期</h1>
-      <p class="desc">重置链接一般 15 分钟内有效。请回到插件重新点一次「忘记密码」，用最新那封邮件里的链接。</p>
+      <!-- 失效视图 -->
+      <div id="bad-view" class="center hide">
+        <div class="badge bad">!</div>
+        <h1>链接无效或已过期</h1>
+        <p class="desc">重置链接通常 15 分钟内有效、且只能使用一次。请回到插件重新点一次「忘记密码」，并用最新那封邮件里的链接。</p>
+      </div>
+
+      <div class="foot">© 2026 ShopSage · 如非你本人操作，请忽略此邮件并尽快修改密码。<br/><a href="https://www.shopsage.cc" target="_blank" rel="noopener">shopsage.cc</a></div>
     </div>
   </div>
 
 <script>
-  // ️⬇️ 部署前必填：把这两行替换成你 background.js 顶部的真实值
+  // ⬇️ 部署前确认这两行是你项目的真实值（anon/publishable 为公钥，可安全置于前端）
   var SUPABASE_URL = 'https://whbtqssluvcvhonxcwnt.supabase.co';
   var SUPABASE_ANON = 'sb_publishable_eQqsWugbYzmkO-YsokY_Ow__-9fxPAv';
 
@@ -89,65 +123,42 @@
   });
 
   var msgEl = document.getElementById('msg');
-  var hintEl = document.getElementById('hint');
   var goBtn = document.getElementById('go');
   function setMsg(t, k){ msgEl.textContent = t || ''; msgEl.className = 'msg' + (k ? ' ' + k : ''); }
+  function show(v){
+    document.getElementById('form-view').classList.toggle('hide', v!=='form');
+    document.getElementById('done-view').classList.toggle('hide', v!=='done');
+    document.getElementById('bad-view').classList.toggle('hide', v!=='bad');
+  }
 
-  // 眼睛切换
   document.querySelectorAll('.eye').forEach(function(b){
     b.addEventListener('click', function(){
       var i = document.getElementById(b.getAttribute('data-for'));
-      var show = i.type === 'password'; i.type = show ? 'text' : 'password'; b.textContent = show ? '🙈' : '👁';
+      var s = i.type === 'password'; i.type = s ? 'text' : 'password'; b.textContent = s ? '🙈' : '👁';
     });
   });
 
-  var sessionReady = false;
-
-  async function tryExchangeCode(){
-    // PKCE 流程：URL 带 ?code=
+  var ready = false;
+  async function boot(){
     var params = new URLSearchParams(location.search);
     var code = params.get('code');
-    if (code) {
-      try { await sb.auth.exchangeCodeForSession(code); } catch(e){ /* 交给下面的 getSession 兜底 */ }
-    }
-  }
-
-  async function boot(){
-    hintEl.textContent = '正在校验重置链接…';
-    await tryExchangeCode();
+    if (code){ try{ await sb.auth.exchangeCodeForSession(code); }catch(e){} }
     var res = await sb.auth.getSession();
-    var session = res && res.data && res.data.session;
-    if (session && session.user) {
-      // 只有当链接确实是 recovery（hash 里带 type=recovery 或 code 交换成功）才放行
-      sessionReady = true;
-      document.getElementById('hint').textContent = '当前账号：' + (session.user.email || '');
-      setMsg('');
-    } else {
-      show('bad');
-    }
-  }
-
-  function show(v){
-    document.getElementById('form-view').style.display = (v==='form')?'':'none';
-    document.getElementById('done-view').style.display = (v==='done')?'':'none';
-    document.getElementById('bad-view').style.display  = (v==='bad') ?'':'none';
+    var s = res && res.data && res.data.session;
+    if (s && s.user){ ready = true; document.getElementById('acct-email').textContent = s.user.email || '—'; show('form'); }
+    else { show('bad'); }
   }
 
   goBtn.addEventListener('click', async function(){
-    if (!sessionReady) { show('bad'); return; }
-    var p1 = document.getElementById('pw1').value;
-    var p2 = document.getElementById('pw2').value;
-    if (!p1 || p1.length < 6) { setMsg('密码至少 6 位', 'err'); return; }
-    if (p1 !== p2) { setMsg('两次输入的密码不一致', 'err'); return; }
+    if (!ready){ show('bad'); return; }
+    var p1 = document.getElementById('pw1').value, p2 = document.getElementById('pw2').value;
+    if (!p1 || p1.length < 6){ setMsg('密码至少 6 位','err'); return; }
+    if (p1 !== p2){ setMsg('两次输入的密码不一致','err'); return; }
     goBtn.disabled = true; setMsg('正在更新…');
     var r = await sb.auth.updateUser({ password: p1 });
     goBtn.disabled = false;
-    if (r.error) {
-      var m = (r.error.message || '').toLowerCase();
-      setMsg('修改失败：' + (r.error.message || '未知错误'), 'err');
-    } else {
-      show('done');
-    }
+    if (r.error){ setMsg('修改失败：' + (r.error.message || '未知错误'),'err'); }
+    else { show('done'); }
   });
 
   boot();
