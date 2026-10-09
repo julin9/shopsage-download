@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>ShopSage · 邮箱验证</title>
+<link rel="icon" type="image/png" href="./logo128.png">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:"Microsoft YaHei","PingFang SC",Arial,sans-serif; background:#f0f4f3; color:#222; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px; }
+  .card { background:#fff; border-radius:16px; box-shadow:0 8px 32px rgba(14,124,102,.12); max-width:440px; width:100%; padding:40px 34px; text-align:center; }
+  .logo { width:72px; height:72px; margin-bottom:14px; }
+  .ok-badge { width:64px; height:64px; border-radius:50%; background:#E8F3F0; display:flex; align-items:center; justify-content:center; margin:0 auto 18px; }
+  .ok-badge svg { width:34px; height:34px; stroke:#0E7C66; }
+  h1 { font-size:21px; color:#0E7C66; margin-bottom:10px; }
+  p { font-size:14px; color:#555; line-height:1.8; margin-bottom:8px; }
+  .tip { margin-top:18px; font-size:13px; color:#8a9491; background:#F3FAF8; border-radius:10px; padding:12px 14px; line-height:1.7; }
+  .bad .ok-badge { background:#FEF2F2; }
+  .bad .ok-badge svg { stroke:#dc2626; }
+  .bad h1 { color:#b91c1c; }
+  .hidden { display:none; }
+</style>
+</head>
+<body>
+  <div class="card" id="card">
+    <img class="logo" src="./logo128.png" alt="ShopSage">
+    <div class="ok-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+    </div>
+    <div id="ok">
+      <h1>邮箱验证成功</h1>
+      <p>你的 ShopSage 账号邮箱已确认，现在可以回到插件登录使用了。</p>
+      <div class="tip">打开 Chrome，进入 TikTok 商家后台右下角的 ShopSage 面板，用刚才注册的邮箱和密码登录即可。此页面可以关闭。</div>
+    </div>
+    <div id="bad" class="hidden">
+      <h1>验证链接已失效</h1>
+      <p>这个链接可能已经用过或过期了。请回到插件重新注册，或在登录页点「忘记密码」重新发送。</p>
+      <div class="tip">如仍有问题，请联系购买渠道客服。</div>
+    </div>
+  </div>
+<script>
+  (function () {
+    try {
+      var h = (location.hash || '') + '&' + (location.search || '');
+      // GoTrue 验证失败时可能带 error / error_code / error_description；成功则通常干净跳转或带 confirmed
+      if (/error[=_]/i.test(h) || /invalid|expired/i.test(h)) {
+        document.getElementById('ok').classList.add('hidden');
+        document.getElementById('bad').classList.remove('hidden');
+        document.getElementById('card').classList.add('bad');
+      }
+    } catch (e) {}
+  })();
+</script>
+</body>
+</html>
