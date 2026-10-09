@@ -14,12 +14,12 @@
     --grad:linear-gradient(135deg,#2A7BFF 0%,#0B4FD6 100%);--shadow:0 10px 30px -12px rgba(11,79,214,.28);--shadow-sm:0 4px 14px -6px rgba(15,27,45,.14);
   }
   *{box-sizing:border-box}
-  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",Segoe UI,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",Segoe UI,sans-serif;background:linear-gradient(180deg,#f4f8fe,#eef4fc);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
   svg{width:1em;height:1em;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.15em}
   a{color:var(--brand);text-decoration:none}
   .hidden{display:none!important}
   .bar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.9);backdrop-filter:saturate(160%) blur(10px);border-bottom:1px solid var(--line)}
-  .bar .in{max-width:1040px;margin:0 auto;padding:0 20px;height:62px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .bar .in{max-width:1080px;margin:0 auto;padding:0 20px;height:62px;display:flex;align-items:center;justify-content:space-between;gap:12px}
   .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px;color:var(--ink)}
   .brand img{width:32px;height:32px;border-radius:8px}
   .brand b{color:var(--brand)}
@@ -27,29 +27,28 @@
   .barmenu{display:flex;align-items:center;gap:14px;font-size:13px}
   .barmenu .em{color:var(--muted);display:inline-flex;align-items:center;gap:6px}
   .barmenu .em svg{color:var(--brand)}
-  .wrap{max-width:1040px;margin:0 auto;padding:26px 20px 70px}
+  .wrap{max-width:1080px;margin:0 auto;padding:26px 20px 70px}
   .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px;margin-bottom:16px;box-shadow:var(--shadow-sm)}
   h1{font-size:20px;margin:0 0 4px}
   .muted{color:var(--muted);font-size:13px}
   label{display:block;font-size:13px;color:var(--muted);margin:12px 0 5px;font-weight:600}
-  input,textarea,select{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:9px;font-size:14px;font-family:inherit;background:#fff;color:var(--ink)}
+  input,textarea,select{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:9px;font-size:14px;font-family:inherit;background:#fff;color:var(--ink)}
   input:focus,textarea:focus,select:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-050)}
   textarea{min-height:110px}
-  .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;background:var(--grad);color:#fff;border:0;border-radius:9px;padding:10px 18px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:var(--shadow-sm);transition:.15s}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;background:var(--grad);color:#fff;border:0;border-radius:9px;padding:10px 16px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:var(--shadow-sm);transition:.15s}
   .btn:hover{filter:brightness(1.05)}
   .btn.block{width:100%;padding:12px;font-size:15px;margin-top:6px}
   .btn-ghost{background:#fff;color:var(--brand);border:1px solid var(--brand-100);box-shadow:none}
   .btn-ghost:hover{background:var(--brand-050)}
-  .btn-sm{padding:8px 13px;font-size:13px}
+  .btn-sm{padding:7px 12px;font-size:12.5px}
   .btn-danger{background:#fff;color:var(--danger);border:1px solid #f3d3d4;box-shadow:none}
   .btn-danger:hover{background:#fdecec}
   .tabs{display:flex;gap:4px;margin-bottom:18px;flex-wrap:wrap;border-bottom:1px solid var(--line)}
   .tabs button{background:transparent;color:var(--muted);border:0;border-bottom:2px solid transparent;padding:11px 16px;font-size:14px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:7px}
   .tabs button:hover{color:var(--ink)}
   .tabs button.on{color:var(--brand);border-bottom-color:var(--brand)}
-  .grid{display:grid;gap:14px}
-  .cards{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
-  .stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow-sm);position:relative;overflow:hidden}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;margin-bottom:6px}
+  .stat{position:relative;background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow-sm);overflow:hidden}
   .stat::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--brand)}
   .stat.acc::before{background:var(--accent)} .stat.bad::before{background:var(--danger)}
   .stat .n{font-size:26px;font-weight:800;color:var(--brand-deep);line-height:1.1}
@@ -58,21 +57,17 @@
   .row label{margin-top:0}
   .row .f{min-width:130px}
   table{width:100%;border-collapse:collapse;font-size:13px}
-  th,td{border-bottom:1px solid var(--line);padding:9px 8px;text-align:left;vertical-align:middle}
-  th{color:var(--muted);font-weight:600;font-size:12px;background:var(--brand-050)}
+  th,td{text-align:left;padding:9px 10px;border-bottom:1px solid #eef3fb;vertical-align:middle}
+  th{color:var(--muted);font-weight:700;background:var(--brand-050);font-size:12px;position:sticky;top:0}
   tbody tr:hover td{background:#fafcff}
   .badge{display:inline-block;font-size:11px;padding:2px 9px;border-radius:20px;background:var(--brand-050);color:var(--brand-deep);font-weight:700}
   .badge.on{background:#e7f7ee;color:var(--ok)} .badge.off{background:#fdecec;color:var(--danger)} .badge.warn{background:#fff3e0;color:#b35900} .badge.mut{background:#eef2f6;color:#64748b}
   .mono{font-family:ui-monospace,Menlo,Consolas,monospace}
   .codes{font-family:ui-monospace,Menlo,Consolas,monospace;background:var(--brand-050);border:1px solid var(--brand-100);border-radius:11px;padding:14px 16px;margin-top:14px;white-space:pre-wrap;word-break:break-all;font-size:13.5px;max-height:260px;overflow:auto;color:var(--brand-deep)}
   .empty{text-align:center;color:#9fb0c4;padding:34px;font-size:14px}
-  .pt{font-weight:700;color:var(--brand-deep);margin-bottom:14px;font-size:15px;display:flex;align-items:center;gap:8px}
+  .pt{font-weight:800;color:var(--brand-deep);margin-bottom:14px;font-size:15px;display:flex;align-items:center;gap:8px}
   .pt svg{color:var(--brand);font-size:18px}
-  .fb{border-bottom:1px solid var(--line);padding:14px 0} .fb:last-child{border-bottom:0}
-  .fb .meta{font-size:12px;color:var(--muted);margin-bottom:5px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-  .fb .meta b{color:var(--brand-deep)}
-  .fb .msg{font-size:14px;color:var(--ink)}
-  .fb pre{margin-top:8px;background:var(--brand-050);border-radius:9px;padding:9px 12px;font-size:11.5px;color:#3a4a5f;white-space:pre-wrap;max-height:130px;overflow:auto}
+  .acts{display:flex;gap:6px;flex-wrap:wrap}
   #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--ink);color:#fff;padding:12px 22px;border-radius:11px;font-size:14px;box-shadow:var(--shadow);opacity:0;transition:.25s;pointer-events:none;z-index:99}
   #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
   #loginWrap{max-width:400px;margin:8vh auto 0}
@@ -88,7 +83,6 @@
   </div>
 </div></div>
 
-<!-- 登录 -->
 <div id="login"><div id="loginWrap"><div class="card">
   <h1>登录后台</h1>
   <p class="muted" style="margin:0">使用管理员邮箱登录，仅白名单账号可进入。</p>
@@ -100,7 +94,6 @@
   </form>
 </div></div></div>
 
-<!-- 应用 -->
 <div id="app" class="hidden"><div class="wrap">
   <div class="tabs">
     <button class="on" data-tab="overview"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>概览</button>
@@ -110,7 +103,13 @@
     <button data-tab="telemetry"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>遥测</button>
   </div>
 
-  <div class="tab" id="tab-overview"><div class="grid cards" id="statCards"><div class="empty">加载中…</div></div></div>
+  <div class="tab" id="tab-overview">
+    <div class="cards" id="statCards"><div class="empty">加载中…</div></div>
+    <div class="card" style="margin-top:14px"><div class="pt"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>到期提醒</div>
+      <div class="row"><div class="f"><label>提前天数</label><input id="expDays" type="number" value="7" min="1" max="90" /></div><button class="btn btn-sm" id="expGo">查看即将到期</button><button class="btn btn-ghost btn-sm" id="expCsv">导出 CSV</button></div>
+      <div style="overflow:auto;max-height:340px;margin-top:12px"><table id="expTb"></table></div>
+    </div>
+  </div>
 
   <div class="tab hidden" id="tab-members">
     <div class="card">
@@ -141,24 +140,26 @@
     <div class="card">
       <div class="pt"><svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>兑换码列表</div>
       <div class="row" style="margin-bottom:12px">
-        <div class="f"><label>筛选状态</label><select id="cStatus"><option value="unused">未使用</option><option value="used">已使用</option><option value="revoked">已吊销</option><option value="">全部</option></select></div>
+        <div class="f"><label>状态</label><select id="cStatus"><option value="unused">未使用</option><option value="used">已使用</option><option value="revoked">已吊销</option><option value="">全部</option></select></div>
+        <div class="f"><label>套餐</label><select id="cPlan"><option value="">全部</option><option value="month">月卡</option><option value="quarter">季卡</option><option value="year">年卡</option><option value="shopgroup">店群</option><option value="legacy">终身</option></select></div>
+        <div class="f" style="flex:1;min-width:160px"><label>搜索</label><input id="cSearch" placeholder="码 / 批次 / 使用者邮箱" /></div>
         <button class="btn btn-sm" id="cGo">加载</button>
+        <button class="btn btn-danger btn-sm" id="cBatch">批量吊销所选</button>
+        <button class="btn btn-ghost btn-sm" id="cExport">导出 CSV</button>
       </div>
       <div style="overflow:auto;max-height:56vh"><table id="cTable"></table></div>
     </div>
   </div>
 
   <div class="tab hidden" id="tab-feedback">
-    <div class="card"><button class="btn btn-sm" id="fGo">刷新反馈</button> <span class="muted" id="fCount"></span></div>
+    <div class="card"><div class="row"><div class="f"><label>状态</label><select id="fStatus"><option value="open">未处理</option><option value="done">已处理</option><option value="">全部</option></select></div><button class="btn btn-sm" id="fGo">刷新反馈</button> <span class="muted" id="fCount"></span></div></div>
     <div class="card" id="fList"><div class="empty">加载中…</div></div>
   </div>
 
   <div class="tab hidden" id="tab-telemetry">
     <div class="card"><div class="row"><div class="f"><label>时间范围</label><select id="tHours"><option value="24">近 24 小时</option><option value="72">近 3 天</option><option value="168">近 7 天</option></select></div><button class="btn btn-sm" id="tGo">刷新</button></div></div>
-    <div class="grid" style="grid-template-columns:1fr 1fr">
-      <div class="card" style="margin:0"><div class="pt"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>事件 TOP</div><table id="tEvents"></table></div>
-      <div class="card" style="margin:0"><div class="pt"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>版本分布</div><table id="tVersions"></table></div>
-    </div>
+    <div class="cards" style="grid-template-columns:1fr 1fr"><div class="card" style="margin:0"><div class="pt"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>事件 TOP</div><table id="tEvents"></table></div>
+    <div class="card" style="margin:0"><div class="pt"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>版本分布</div><table id="tVersions"></table></div></div>
   </div>
 </div></div>
 <div id="toast"></div>
@@ -174,101 +175,115 @@
   function fmtDate(d){ if(!d) return '—'; try{ return new Date(d).toLocaleString('zh-CN',{hour12:false}); }catch(e){ return d; } }
   function show(el){ el.classList.remove('hidden'); } function hide(el){ el.classList.add('hidden'); }
   async function rpc(fn, args){ var r=await sb.rpc(fn, args||{}); if(r.error){ return {ok:false, status:'rpc_error', msg:r.error.message}; } return r.data; }
+  function download(name, text){ var a=document.createElement('a'); a.href=URL.createObjectURL(new Blob(['\ufeff'+text],{type:'text/csv;charset=utf-8'})); a.download=name; document.body.appendChild(a); a.click(); setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},300); }
+  function csvOf(cols, rows){ return [cols.join(',')].concat(rows.map(function(r){return r.map(function(c){var s=String(c==null?'':c); return /[",\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;}).join(',');})).join('\n'); }
 
   async function enter(){
     hide($('#login')); show($('#app')); $('#appCtl').style.display=''; $('#logout').style.display='';
     var s=await sb.auth.getSession(); var em=(s&&s.data&&s.data.session&&s.data.session.user&&s.data.session.user.email)||'';
-    $('#whoami').textContent=em;
-    loadOverview();
+    $('#whoami').textContent=em; loadOverview();
   }
-  async function tryRestore(){
-    var s=await sb.auth.getSession();
-    if(s && s.data && s.data.session){ var st=await rpc('admin_stats'); if(st && st.ok){ enter(); return; } await sb.auth.signOut(); }
-  }
+  async function tryRestore(){ var s=await sb.auth.getSession(); if(s&&s.data&&s.data.session){ var st=await rpc('admin_stats'); if(st&&st.ok){ enter(); return; } await sb.auth.signOut(); } }
   $('#loginForm').addEventListener('submit', async function(e){
     e.preventDefault(); $('#lerr').textContent=''; $('#lbtn').disabled=true; $('#lbtn').textContent='登录中…';
-    var em=$('#le').value.trim(), pw=$('#lp').value;
-    var r=await sb.auth.signInWithPassword({email:em, password:pw});
-    if(r.error){ $('#lerr').textContent = /invalid login credentials/i.test(r.error.message)?'邮箱或密码错误':r.error.message; $('#lbtn').disabled=false; $('#lbtn').textContent='进入后台'; return; }
-    var st=await rpc('admin_stats');
-    if(!st || !st.ok){ await sb.auth.signOut(); $('#lerr').textContent='该账号不是管理员，无权访问后台'; $('#lbtn').disabled=false; $('#lbtn').textContent='进入后台'; return; }
+    var r=await sb.auth.signInWithPassword({email:$('#le').value.trim(), password:$('#lp').value});
+    if(r.error){ $('#lerr').textContent=/invalid login credentials/i.test(r.error.message)?'邮箱或密码错误':r.error.message; $('#lbtn').disabled=false; $('#lbtn').textContent='进入后台'; return; }
+    var st=await rpc('admin_stats'); if(!st||!st.ok){ await sb.auth.signOut(); $('#lerr').textContent='该账号不是管理员，无权访问后台'; $('#lbtn').disabled=false; $('#lbtn').textContent='进入后台'; return; }
     $('#lbtn').disabled=false; $('#lbtn').textContent='进入后台'; enter();
   });
   $('#logout').onclick=async function(){ await sb.auth.signOut(); location.reload(); };
 
   var loaders={overview:loadOverview, members:loadMembers, codes:loadCodes, feedback:loadFeedback, telemetry:loadTelemetry};
-  function tab(id){
-    document.querySelectorAll('.tabs button').forEach(function(b){ b.classList.toggle('on', b.getAttribute('data-tab')===id); });
-    document.querySelectorAll('.tab').forEach(function(t){ hide(t); });
-    show($('#tab-'+id)); if(loaders[id]) loaders[id]();
-  }
+  function tab(id){ document.querySelectorAll('.tabs button').forEach(function(b){ b.classList.toggle('on', b.getAttribute('data-tab')===id); }); document.querySelectorAll('.tab').forEach(hide); show($('#tab-'+id)); if(loaders[id]) loaders[id](); }
   document.querySelectorAll('.tabs button').forEach(function(b){ b.onclick=function(){ tab(b.getAttribute('data-tab')); }; });
 
   async function loadOverview(){
     var st=await rpc('admin_stats'); if(!st||!st.ok){ $('#statCards').innerHTML='<div class="empty">无权限或加载失败</div>'; return; }
-    var items=[['活跃会员',st.active_members,''],['会员总数',st.members_total,''],['7天内到期',st.expiring_7d,'acc'],['已过期',st.expired,'bad'],['未用兑换码',st.codes_unused,''],['已用兑换码',st.codes_used,''],['已吊销码',st.codes_revoked,''],['注册用户',st.total_users,''],['反馈总数',st.feedback_total,'acc'],['24h事件',st.events_24h,''],['24h错误',st.error_events_24h,'bad']];
+    var items=[['活跃会员',st.active_members,''],['会员总数',st.members_total,''],['7天内到期',st.expiring_7d,'acc'],['已过期',st.expired,'bad'],['未用兑换码',st.codes_unused,''],['已用兑换码',st.codes_used,''],['已吊销码',st.codes_revoked,''],['注册用户',st.total_users,''],['未处理反馈',st.feedback_total,'acc'],['24h事件',st.events_24h,''],['24h错误',st.error_events_24h,'bad']];
     $('#statCards').innerHTML=items.map(function(it){return '<div class="stat '+it[2]+'"><div class="n">'+(+it[1]||0)+'</div><div class="l">'+esc(it[0])+'</div></div>';}).join('');
   }
+  async function loadExpiring(csv){
+    var d=+$('#expDays').value||7; var st=await rpc('admin_expiring',{p_days:d}); if(!st||!st.ok){ toast('加载失败'); return; }
+    var rows=st.rows||[];
+    if(csv){ if(!rows.length){toast('无到期会员');return;} download('ShopSage-即将到期-'+d+'天.csv', csvOf(['邮箱','套餐','到期时间','店铺'], rows.map(function(r){return [r.email,r.plan,fmtDate(r.expires_at),(r.stores_used||0)+'/'+(r.max_stores||0)];}))); return; }
+    $('#expTb').innerHTML= rows.length?('<thead><tr><th>邮箱</th><th>套餐</th><th>到期</th><th>店铺</th></tr></thead><tbody>'+rows.map(function(r){return '<tr><td>'+esc(r.email)+'</td><td>'+esc(r.plan)+'</td><td><span class="badge warn">'+fmtDate(r.expires_at)+'</span></td><td class="mono">'+(r.stores_used||0)+'/'+(r.max_stores||0)+'</td></tr>';}).join('')+'</tbody>'):'<tr><td class="empty">该时间段内无到期会员</td></tr>';
+  }
+  $('#expGo').onclick=function(){loadExpiring(false);}; $('#expCsv').onclick=function(){loadExpiring(true);};
 
   async function loadMembers(){
     var st=await rpc('admin_list_memberships',{p_limit:500, p_search:$('#mSearch').value.trim()});
-    if(!st||!st.ok){ $('#mTable').innerHTML=''; return; }
+    if(!st||!st.ok){ return; }
     var rows=st.rows||[];
     if(!rows.length){ $('#mTable').innerHTML='<tr><td class="empty">暂无会员</td></tr>'; return; }
-    var h='<thead><tr><th>邮箱</th><th>套餐</th><th>状态</th><th>到期</th><th>店铺</th><th>设备</th></tr></thead><tbody>';
+    var h='<thead><tr><th>邮箱</th><th>套餐</th><th>状态</th><th>到期</th><th>店铺</th><th>设备</th><th>操作</th></tr></thead><tbody>';
     h+=rows.map(function(r){
-      var act=r.lifetime?'<span class="badge on">终身</span>':(r.active?'<span class="badge on">生效中</span>':'<span class="badge off">已过期</span>');
+      var act=r.suspended?'<span class="badge off">已冻结</span>':(r.lifetime?'<span class="badge on">终身</span>':(r.active?'<span class="badge on">生效中</span>':'<span class="badge off">已过期</span>'));
       var exp=r.lifetime?'终身':fmtDate(r.expires_at);
       var soon=(!r.lifetime && r.active && (new Date(r.expires_at)-Date.now())<7*864e5)?' <span class="badge warn">即将到期</span>':'';
-      return '<tr><td>'+esc(r.email)+'</td><td>'+esc(r.plan)+'</td><td>'+act+'</td><td>'+esc(exp)+soon+'</td><td class="mono">'+(r.stores_used||0)+'/'+(r.max_stores||0)+'</td><td>'+(r.devices_used||0)+'</td></tr>';
+      var tog=r.suspended?('解封:'+r.user_id):('冻结:'+r.user_id);
+      return '<tr><td>'+esc(r.email)+'</td><td>'+esc(r.plan)+'</td><td>'+act+'</td><td>'+esc(exp)+soon+'</td><td class="mono">'+(r.stores_used||0)+'/'+(r.max_stores||0)+'</td><td>'+(r.devices_used||0)+'</td>'+
+        '<td><div class="acts"><button class="btn btn-sm" data-act="ext" data-uid="'+r.user_id+'">延期</button><button class="btn btn-sm btn-ghost" data-act="stores" data-uid="'+r.user_id+'" data-cur="'+(r.max_stores||0)+'">店铺</button><button class="btn btn-sm btn-danger" data-act="tog" data-v="'+tog+'">'+(r.suspended?'解封':'冻结')+'</button></div></td></tr>';
     }).join('');
     $('#mTable').innerHTML=h+'</tbody>';
+    $('#mTable').querySelectorAll('[data-act]').forEach(function(b){ b.onclick=function(){ memberAct(b); }; });
+  }
+  async function memberAct(b){
+    var act=b.getAttribute('data-act');
+    if(act==='ext'){ var d=prompt('延期天数（可负数缩短，如 30 / 90 / 365）','30'); if(d===null)return; var r=await rpc('admin_extend',{p_user_id:b.getAttribute('data-uid'), p_days:parseInt(d,10)}); toast(r&&r.ok?('已延期至 '+fmtDate(r.expires_at)):('失败:'+((r&&r.status)||''))); loadMembers(); }
+    else if(act==='stores'){ var s=prompt('设置店铺额度', b.getAttribute('data-cur')); if(s===null)return; var r=await rpc('admin_set_stores',{p_user_id:b.getAttribute('data-uid'), p_stores:parseInt(s,10)}); toast(r&&r.ok?('店铺额度已设为 '+r.max_stores):('失败:'+((r&&r.status)||''))); loadMembers(); }
+    else if(act==='tog'){ var v=b.getAttribute('data-v').split(':'); var on=v[0]==='冻结'; if(!confirm((on?'冻结':'解封')+'该会员账号？冻结后其插件将立即停用。'))return; var r=await rpc('admin_suspend',{p_user_id:v[1], p_suspend:on}); toast(r&&r.ok?(on?'已冻结':'已解封'):('失败:'+((r&&r.status)||''))); loadMembers(); }
   }
   $('#mGo').onclick=loadMembers; $('#mRefresh').onclick=loadMembers;
   $('#mSearch').addEventListener('keydown',function(e){ if(e.key==='Enter') loadMembers(); });
 
-  var lastCodes=[];
+  var lastCodes=[], lastCodeRows=[];
   async function genCodes(){
-    var pv=$('#gPlan').value.split('|'); var plan=pv[0], days=+pv[1];
-    var r=await rpc('admin_generate_codes',{p_plan:plan, p_duration_days:days, p_add_stores:+$('#gStores').value||10, p_count:+$('#gCount').value||10, p_batch:$('#gBatch').value.trim()});
+    var pv=$('#gPlan').value.split('|'); var r=await rpc('admin_generate_codes',{p_plan:pv[0], p_duration_days:+pv[1], p_add_stores:+$('#gStores').value||10, p_count:+$('#gCount').value||10, p_batch:$('#gBatch').value.trim()});
     if(!r||!r.ok){ toast('生成失败：'+((r&&r.status)||'未知')); return; }
     lastCodes=r.codes||[]; var box=$('#gOut'); box.classList.remove('hidden'); box.textContent=lastCodes.join('\n');
     $('#gActions').classList.remove('hidden'); toast('已生成 '+r.count+' 个兑换码'); loadCodes();
   }
   $('#gGo').onclick=genCodes;
-  $('#gCopy').onclick=function(){ navigator.clipboard.writeText(lastCodes.join('\n')).then(function(){toast('已复制到剪贴板');},function(){toast('复制失败，请手动选择');}); };
+  $('#gCopy').onclick=function(){ navigator.clipboard.writeText(lastCodes.join('\n')).then(function(){toast('已复制到剪贴板');},function(){toast('复制失败');}); };
   async function loadCodes(){
-    var st=await rpc('admin_list_codes',{p_status:$('#cStatus').value, p_limit:500});
-    if(!st||!st.ok){ $('#cTable').innerHTML=''; return; }
-    var rows=st.rows||[];
+    var st=await rpc('admin_list_codes2',{p_status:$('#cStatus').value, p_limit:500, p_search:$('#cSearch').value.trim(), p_plan:$('#cPlan').value});
+    if(!st||!st.ok){ return; }
+    var rows=st.rows||[]; lastCodeRows=rows;
     if(!rows.length){ $('#cTable').innerHTML='<tr><td class="empty">暂无兑换码</td></tr>'; return; }
-    var h='<thead><tr><th>兑换码</th><th>状态</th><th>套餐</th><th>天数</th><th>店铺</th><th>使用者</th><th>批次</th><th></th></tr></thead><tbody>';
+    var h='<thead><tr><th></th><th>兑换码</th><th>状态</th><th>套餐</th><th>天数</th><th>店铺</th><th>使用者</th><th>批次</th><th></th></tr></thead><tbody>';
     h+=rows.map(function(r){
       var tag=r.status==='unused'?'<span class="badge on">未用</span>':(r.status==='used'?'<span class="badge mut">已用</span>':'<span class="badge off">已吊销</span>');
+      var chk=r.status==='unused'?('<input type="checkbox" class="csel" value="'+esc(r.code)+'" />'):'';
       var rev=r.status==='unused'?('<button class="btn btn-danger btn-sm" data-rev="'+esc(r.code)+'">吊销</button>'):'';
-      return '<tr><td class="mono">'+esc(r.code)+'</td><td>'+tag+'</td><td>'+esc(r.plan)+'</td><td>'+(r.duration_days==null?'终身':r.duration_days)+'</td><td>'+(r.add_stores||0)+'</td><td>'+esc(r.used_by_email||'—')+'</td><td>'+esc(r.batch||'')+'</td><td>'+rev+'</td></tr>';
+      return '<tr><td>'+chk+'</td><td class="mono">'+esc(r.code)+'</td><td>'+tag+'</td><td>'+esc(r.plan)+'</td><td>'+(r.duration_days==null?'终身':r.duration_days)+'</td><td>'+(r.add_stores||0)+'</td><td>'+esc(r.used_by_email||'—')+'</td><td>'+esc(r.batch||'')+'</td><td>'+rev+'</td></tr>';
     }).join('');
     $('#cTable').innerHTML=h+'</tbody>';
     $('#cTable').querySelectorAll('[data-rev]').forEach(function(b){ b.onclick=function(){ revoke(b.getAttribute('data-rev')); }; });
   }
-  async function revoke(code){ if(!confirm('确定吊销兑换码 '+code+' ？')) return; var r=await rpc('admin_revoke_code',{p_code:code}); if(r&&r.ok){ toast('已吊销 '+code); loadCodes(); } else toast('吊销失败：'+((r&&r.status)||'')); }
+  async function revoke(code){ if(!confirm('确定吊销 '+code+' ？')) return; var r=await rpc('admin_revoke_code',{p_code:code}); if(r&&r.ok){ toast('已吊销'); loadCodes(); } else toast('失败:'+((r&&r.status)||'')); }
   $('#cGo').onclick=loadCodes;
+  $('#cSearch').addEventListener('keydown',function(e){ if(e.key==='Enter') loadCodes(); });
+  $('#cBatch').onclick=async function(){ var sel=[].slice.call($('#cTable').querySelectorAll('.csel:checked')).map(function(c){return c.value;}); if(!sel.length){toast('请先勾选要吊销的码');return;} if(!confirm('确定批量吊销 '+sel.length+' 个未使用兑换码？'))return; var r=await rpc('admin_revoke_batch',{p_codes:sel}); toast(r&&r.ok?('已吊销 '+r.revoked+' 个'):('失败:'+((r&&r.status)||''))); loadCodes(); };
+  $('#cExport').onclick=function(){ if(!lastCodeRows.length){toast('无数据');return;} download('ShopSage-兑换码-'+$('#cStatus').value+'.csv', csvOf(['兑换码','状态','套餐','天数','店铺额度','批次','使用者','创建时间','使用时间'], lastCodeRows.map(function(r){return [r.code,r.status,r.plan,(r.duration_days==null?'终身':r.duration_days),r.add_stores,r.batch||'',r.used_by_email||'',fmtDate(r.created_at),r.used_at?fmtDate(r.used_at):''];}))); };
 
   async function loadFeedback(){
-    var st=await rpc('admin_list_feedback',{p_limit:200});
+    var st=await rpc('admin_list_feedback2',{p_limit:200, p_status:$('#fStatus').value});
     if(!st||!st.ok){ $('#fList').innerHTML='<div class="empty">加载失败</div>'; return; }
-    var rows=st.rows||[]; $('#fCount').textContent=rows.length? ('共 '+rows.length+' 条（最新）'):'';
+    var rows=st.rows||[]; $('#fCount').textContent=rows.length? ('共 '+rows.length+' 条'):'';
     if(!rows.length){ $('#fList').innerHTML='<div class="empty">暂无反馈</div>'; return; }
     $('#fList').innerHTML=rows.map(function(r){
-      return '<div class="fb"><div class="meta"><b>'+fmtDate(r.created_at)+'</b><span class="badge">'+esc(r.email||'匿名')+'</span><span>v'+esc(r.ver||'?')+'</span><span>'+esc(r.region||'')+'</span><span>'+esc(r.plan||'')+'</span>'+(r.contact?('<span>联系 '+esc(r.contact)+'</span>'):'')+'</div>'+
-        '<div class="msg">'+esc(r.message||'')+'</div>'+ (r.log?('<pre>'+esc(r.log)+'</pre>'):'') +'</div>';
+      var badge=r.status==='done'?'<span class="badge on">已处理</span>':'<span class="badge warn">未处理</span>';
+      var btn=r.status==='done'?('<button class="btn btn-sm btn-ghost" data-fb="'+r.id+'" data-s="open">标为未处理</button>'):('<button class="btn btn-sm" data-fb="'+r.id+'" data-s="done">标记已处理</button>');
+      return '<div class="fb"><div class="meta"><b>'+fmtDate(r.created_at)+'</b><span class="badge">'+esc(r.email||'匿名')+'</span><span>v'+esc(r.ver||'?')+'</span><span>'+esc(r.region||'')+'</span><span>'+esc(r.plan||'')+'</span>'+(r.contact?('<span>联系 '+esc(r.contact)+'</span>'):'')+badge+'</div>'+
+        '<div class="msg">'+esc(r.message||'')+'</div>'+ (r.log?('<pre>'+esc(r.log)+'</pre>'):'') + (r.note?('<div class="muted" style="margin-top:6px">备注：'+esc(r.note)+'</div>'):'')+
+        '<div style="margin-top:8px">'+btn+'</div></div>';
     }).join('');
+    $('#fList').querySelectorAll('[data-fb]').forEach(function(b){ b.onclick=async function(){ var r=await rpc('admin_set_feedback',{p_id:+b.getAttribute('data-fb'), p_status:b.getAttribute('data-s'), p_note:''}); if(r&&r.ok) loadFeedback(); else toast('操作失败'); }; });
   }
   $('#fGo').onclick=loadFeedback;
 
   async function loadTelemetry(){
-    var st=await rpc('admin_telemetry',{p_hours:+$('#tHours').value||24});
-    if(!st||!st.ok){ return; }
+    var st=await rpc('admin_telemetry',{p_hours:+$('#tHours').value||24}); if(!st||!st.ok){ return; }
     var ev=st.top_events||[], vv=st.by_version||[];
     $('#tEvents').innerHTML= ev.length?('<thead><tr><th>事件</th><th>次数</th></tr></thead><tbody>'+ev.map(function(e){return '<tr><td>'+esc(e.event)+'</td><td class="mono">'+e.n+'</td></tr>';}).join('')+'</tbody>'):'<tr><td class="empty">无数据</td></tr>';
     $('#tVersions').innerHTML= vv.length?('<thead><tr><th>版本</th><th>次数</th></tr></thead><tbody>'+vv.map(function(e){return '<tr><td class="mono">'+esc(e.ver)+'</td><td class="mono">'+e.n+'</td></tr>';}).join('')+'</tbody>'):'<tr><td class="empty">无数据</td></tr>';
