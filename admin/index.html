@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>ShopSage 运营后台</title>
+<link rel="icon" type="image/png" href="../logo128.png">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:"Microsoft YaHei","PingFang SC",Arial,sans-serif; background:#f0f4f3; color:#222; }
+  a { color:#0E7C66; }
+  .hidden { display:none !important; }
+  /* login */
+  #login { min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px; }
+  .lcard { background:#fff; border-radius:16px; box-shadow:0 8px 32px rgba(14,124,102,.12); width:360px; padding:36px 30px; }
+  .lcard img { width:64px; height:64px; display:block; margin:0 auto 10px; }
+  .lcard h1 { font-size:20px; color:#0E7C66; text-align:center; margin-bottom:4px; }
+  .lcard .sub { text-align:center; color:#8a9491; font-size:13px; margin-bottom:22px; }
+  .fld { margin-bottom:14px; }
+  .fld label { display:block; font-size:13px; color:#475569; margin-bottom:6px; font-weight:600; }
+  .fld input, .fld select, textarea { width:100%; padding:10px 12px; border:1px solid #d5dedb; border-radius:9px; font-size:14px; font-family:inherit; }
+  .fld input:focus, .fld select:focus, textarea:focus { outline:none; border-color:#0E7C66; box-shadow:0 0 0 3px rgba(14,124,102,.12); }
+  .btn { display:inline-block; border:none; border-radius:9px; padding:10px 16px; font-size:14px; font-weight:700; cursor:pointer; background:#0E7C66; color:#fff; }
+  .btn:hover { filter:brightness(1.06); }
+  .btn.block { width:100%; padding:12px; }
+  .btn.gray { background:#eef2f1; color:#334155; }
+  .btn.sm { padding:6px 10px; font-size:12px; }
+  .btn.danger { background:#dc2626; }
+  .lerr { color:#e11d48; font-size:13px; margin-top:12px; min-height:18px; text-align:center; }
+  /* app */
+  #app { display:flex; min-height:100vh; }
+  .side { width:210px; background:#0b3b31; color:#cfe9e2; flex:0 0 auto; padding:20px 0; }
+  .side .brand { display:flex; align-items:center; gap:8px; padding:0 20px 18px; font-weight:800; color:#fff; font-size:16px; border-bottom:1px solid rgba(255,255,255,.08); margin-bottom:10px; }
+  .side .brand img { width:28px; height:28px; }
+  .nav a { display:block; padding:11px 20px; color:#cfe9e2; text-decoration:none; font-size:14px; cursor:pointer; border-left:3px solid transparent; }
+  .nav a:hover { background:rgba(255,255,255,.05); }
+  .nav a.on { background:rgba(255,255,255,.09); color:#fff; border-left-color:#37c9a5; font-weight:700; }
+  .side .foot { position:absolute; bottom:16px; left:0; right:0; padding:0 20px; font-size:12px; color:#7fb3a7; }
+  .main { flex:1; padding:22px 26px; overflow:auto; }
+  .topbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; }
+  .topbar h2 { font-size:19px; color:#0E7C66; }
+  .topbar .who { font-size:13px; color:#64748b; }
+  .cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:14px; margin-bottom:8px; }
+  .card { background:#fff; border-radius:12px; padding:16px 18px; box-shadow:0 2px 10px rgba(14,124,102,.06); }
+  .card .n { font-size:26px; font-weight:800; color:#0E7C66; }
+  .card .l { font-size:12.5px; color:#64748b; margin-top:2px; }
+  .panel { background:#fff; border-radius:12px; padding:18px; box-shadow:0 2px 10px rgba(14,124,102,.06); margin-bottom:16px; }
+  .row { display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end; }
+  .row .fld { margin-bottom:0; min-width:120px; }
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  th, td { text-align:left; padding:9px 10px; border-bottom:1px solid #eef2f1; }
+  th { color:#475569; font-weight:700; background:#f6faf9; position:sticky; top:0; }
+  tr:hover td { background:#fafcfb; }
+  .tag { display:inline-block; padding:2px 8px; border-radius:20px; font-size:11.5px; font-weight:700; }
+  .tag.on { background:#e6f6ef; color:#0E7C66; } .tag.off { background:#fdecec; color:#c0392b; }
+  .tag.warn { background:#fff3e0; color:#b35900; } .tag.mut { background:#eef2f1; color:#64748b; }
+  .codes { font-family:ui-monospace,Consolas,monospace; background:#f6faf9; border:1px solid #e2ece9; border-radius:9px; padding:12px 14px; margin-top:12px; white-space:pre-wrap; word-break:break-all; font-size:13px; max-height:260px; overflow:auto; }
+  .muted { color:#8a9491; font-size:12.5px; }
+  #toast { position:fixed; bottom:22px; left:50%; transform:translateX(-50%); background:#0b3b31; color:#fff; padding:11px 20px; border-radius:10px; font-size:14px; box-shadow:0 6px 20px rgba(0,0,0,.2); opacity:0; transition:opacity .2s; pointer-events:none; z-index:99; }
+  #toast.show { opacity:1; }
+  .fb { border-bottom:1px solid #eef2f1; padding:12px 0; } .fb:last-child { border-bottom:none; }
+  .fb .meta { font-size:12px; color:#8a9489; margin-bottom:4px; }
+  .fb .msg { font-size:14px; color:#222; }
+  .fb pre { margin-top:6px; background:#f6faf9; border-radius:8px; padding:8px 10px; font-size:11.5px; color:#475569; white-space:pre-wrap; max-height:120px; overflow:auto; }
+  .empty { text-align:center; color:#9aa5a3; padding:30px; font-size:14px; }
+</style>
+</head>
+<body>
+  <!-- 登录 -->
+  <div id="login">
+    <form class="lcard" id="loginForm">
+      <img src="../logo128.png" alt="ShopSage">
+      <h1>ShopSage 运营后台</h1>
+      <div class="sub">管理员登录</div>
+      <div class="fld"><label>邮箱</label><input id="le" type="email" autocomplete="username" required></div>
+      <div class="fld"><label>密码</label><input id="lp" type="password" autocomplete="current-password" required></div>
+      <button class="btn block" id="lbtn" type="submit">登 录</button>
+      <div class="lerr" id="lerr"></div>
+    </form>
+  </div>
+
+  <!-- 应用 -->
+  <div id="app" class="hidden">
+    <div class="side">
+      <div class="brand"><img src="../logo128.png"> ShopSage</div>
+      <div class="nav">
+        <a data-tab="overview" class="on">概览</a>
+        <a data-tab="members">用户与会员</a>
+        <a data-tab="codes">兑换码</a>
+        <a data-tab="feedback">反馈</a>
+        <a data-tab="telemetry">遥测</a>
+      </div>
+      <div class="foot"><span id="whoami"></span><br><a id="logout" style="cursor:pointer">退出登录</a></div>
+    </div>
+    <div class="main">
+      <div class="topbar"><h2 id="tabTitle">概览</h2><div class="who">ShopSage 运营后台</div></div>
+
+      <!-- 概览 -->
+      <div class="tab" id="tab-overview">
+        <div class="cards" id="statCards"><div class="empty">加载中…</div></div>
+      </div>
+
+      <!-- 用户与会员 -->
+      <div class="tab hidden" id="tab-members">
+        <div class="panel">
+          <div class="row">
+            <div class="fld"><label>搜索邮箱</label><input id="mSearch" placeholder="输入邮箱片段"></div>
+            <button class="btn sm" id="mGo">查询</button>
+            <button class="btn sm gray" id="mRefresh">刷新</button>
+          </div>
+        </div>
+        <div class="panel" style="padding:0;overflow:auto;max-height:70vh"><table id="mTable"></table></div>
+      </div>
+
+      <!-- 兑换码 -->
+      <div class="tab hidden" id="tab-codes">
+        <div class="panel">
+          <div style="font-weight:700;color:#0E7C66;margin-bottom:12px">批量生成兑换码</div>
+          <div class="row">
+            <div class="fld"><label>套餐</label>
+              <select id="gPlan">
+                <option value="month|30">月卡 · 30天</option>
+                <option value="quarter|90">季卡 · 90天</option>
+                <option value="year|365">年卡 · 365天</option>
+                <option value="shopgroup|365">店群年卡 · 365天</option>
+              </select>
+            </div>
+            <div class="fld"><label>店铺额度</label><input id="gStores" type="number" value="10" min="1" max="200"></div>
+            <div class="fld"><label>数量</label><input id="gCount" type="number" value="10" min="1" max="500"></div>
+            <div class="fld"><label>批次备注</label><input id="gBatch" placeholder="如 2026Q4-渠道A"></div>
+            <button class="btn" id="gGo">生成兑换码</button>
+          </div>
+          <div id="gOut" class="codes hidden"></div>
+          <div id="gActions" class="hidden" style="margin-top:10px"><button class="btn sm gray" id="gCopy">复制全部</button></div>
+        </div>
+        <div class="panel">
+          <div class="row" style="margin-bottom:10px">
+            <div class="fld"><label>筛选状态</label>
+              <select id="cStatus"><option value="unused">未使用</option><option value="used">已使用</option><option value="revoked">已吊销</option><option value="">全部</option></select>
+            </div>
+            <button class="btn sm" id="cGo">加载</button>
+          </div>
+          <div style="overflow:auto;max-height:56vh"><table id="cTable"></table></div>
+        </div>
+      </div>
+
+      <!-- 反馈 -->
+      <div class="tab hidden" id="tab-feedback">
+        <div class="panel"><button class="btn sm" id="fGo">刷新反馈</button> <span class="muted" id="fCount"></span></div>
+        <div class="panel" id="fList"><div class="empty">加载中…</div></div>
+      </div>
+
+      <!-- 遥测 -->
+      <div class="tab hidden" id="tab-telemetry">
+        <div class="panel"><div class="row"><div class="fld"><label>时间范围</label>
+          <select id="tHours"><option value="24">近 24 小时</option><option value="72">近 3 天</option><option value="168">近 7 天</option></select>
+        </div><button class="btn sm" id="tGo">刷新</button></div></div>
+        <div class="cards"><div class="panel" style="flex:1;min-width:260px"><div style="font-weight:700;margin-bottom:10px;color:#0E7C66">事件 TOP</div><table id="tEvents"></table></div>
+        <div class="panel" style="flex:1;min-width:260px"><div style="font-weight:700;margin-bottom:10px;color:#0E7C66">版本分布</div><table id="tVersions"></table></div></div>
+      </div>
+    </div>
+  </div>
+  <div id="toast"></div>
+
+<script>
+(function(){
+  var SUP_URL='https://whbtqssluvcvhonxcwnt.supabase.co';
+  var SUP_ANON='sb_publishable_eQqsWugbYzmkO-YsokY_Ow__-9fxPAv';
+  var sb = window.supabase.createClient(SUP_URL, SUP_ANON);
+  var $=function(s){return document.querySelector(s);};
+  var esc=function(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});};
+  function toast(m){ var t=$('#toast'); t.textContent=m; t.classList.add('show'); setTimeout(function(){t.classList.remove('show');},2200); }
+  function fmtDate(d){ if(!d) return '—'; try{ return new Date(d).toLocaleString('zh-CN',{hour12:false}); }catch(e){ return d; } }
+  function show(el){ el.classList.remove('hidden'); } function hide(el){ el.classList.add('hidden'); }
+
+  async function rpc(fn, args){ var r=await sb.rpc(fn, args||{}); if(r.error){ return {ok:false, status:'rpc_error', msg:r.error.message}; } return r.data; }
+
+  // ---- auth ----
+  async function enter(){
+    hide($('#login')); show($('#app'));
+    var s=await sb.auth.getSession(); var em=(s&&s.data&&s.data.session&&s.data.session.user&&s.data.session.user.email)||'';
+    $('#whoami').textContent=em;
+    loadOverview();
+  }
+  async function tryRestore(){
+    var s=await sb.auth.getSession();
+    if(s && s.data && s.data.session){
+      var st=await rpc('admin_stats'); if(st && st.ok){ enter(); return; }
+      await sb.auth.signOut();
+    }
+  }
+  $('#loginForm').addEventListener('submit', async function(e){
+    e.preventDefault(); $('#lerr').textContent=''; $('#lbtn').disabled=true; $('#lbtn').textContent='登录中…';
+    var em=$('#le').value.trim(), pw=$('#lp').value;
+    var r=await sb.auth.signInWithPassword({email:em, password:pw});
+    if(r.error){ $('#lerr').textContent = /invalid login credentials/i.test(r.error.message)?'邮箱或密码错误':r.error.message; $('#lbtn').disabled=false; $('#lbtn').textContent='登 录'; return; }
+    var st=await rpc('admin_stats');
+    if(!st || !st.ok){ await sb.auth.signOut(); $('#lerr').textContent='该账号不是管理员，无权访问后台'; $('#lbtn').disabled=false; $('#lbtn').textContent='登 录'; return; }
+    $('#lbtn').disabled=false; $('#lbtn').textContent='登 录'; enter();
+  });
+  $('#logout').onclick=async function(){ await sb.auth.signOut(); location.reload(); };
+
+  // ---- tabs ----
+  var loaders={overview:loadOverview, members:loadMembers, codes:loadCodes, feedback:loadFeedback, telemetry:loadTelemetry};
+  document.querySelectorAll('.nav a').forEach(function(a){ a.onclick=function(){
+    document.querySelectorAll('.nav a').forEach(function(x){x.classList.remove('on');}); a.classList.add('on');
+    document.querySelectorAll('.tab').forEach(function(t){hide(t);});
+    var id=a.getAttribute('data-tab'); show($('#tab-'+id)); $('#tabTitle').textContent=a.textContent;
+    if(loaders[id]) loaders[id]();
+  };});
+
+  // ---- overview ----
+  async function loadOverview(){
+    var st=await rpc('admin_stats'); if(!st||!st.ok){ $('#statCards').innerHTML='<div class="empty">无权限或加载失败</div>'; return; }
+    var items=[['活跃会员',st.active_members],['会员总数',st.members_total],['7天内到期',st.expiring_7d],['已过期',st.expired],['未用兑换码',st.codes_unused],['已用兑换码',st.codes_used],['已吊销码',st.codes_revoked],['注册用户',st.total_users],['反馈总数',st.feedback_total],['24h事件',st.events_24h],['24h错误',st.error_events_24h]];
+    $('#statCards').innerHTML=items.map(function(it){return '<div class="card"><div class="n">'+(+it[1]||0)+'</div><div class="l">'+esc(it[0])+'</div></div>';}).join('');
+  }
+
+  // ---- members ----
+  async function loadMembers(){
+    var st=await rpc('admin_list_memberships',{p_limit:500, p_search:$('#mSearch').value.trim()});
+    if(!st||!st.ok){ $('#mTable').innerHTML=''; $('#tab-members .panel:last-child').innerHTML='<div class="empty">加载失败</div>'; return; }
+    var rows=st.rows||[];
+    if(!rows.length){ $('#mTable').innerHTML='<tr><td class="empty">暂无会员</td></tr>'; return; }
+    var h='<tr><th>邮箱</th><th>套餐</th><th>状态</th><th>到期</th><th>店铺</th><th>设备</th></tr>';
+    h+=rows.map(function(r){
+      var act=r.lifetime?'<span class="tag on">终身</span>':(r.active?'<span class="tag on">生效中</span>':'<span class="tag off">已过期</span>');
+      var exp=r.lifetime?'终身':fmtDate(r.expires_at);
+      var soon=(!r.lifetime && r.active && (new Date(r.expires_at)-Date.now())<7*864e5)?' <span class="tag warn">即将到期</span>':'';
+      return '<tr><td>'+esc(r.email)+'</td><td>'+esc(r.plan)+'</td><td>'+act+'</td><td>'+esc(exp)+soon+'</td><td>'+(r.stores_used||0)+'/'+(r.max_stores||0)+'</td><td>'+(r.devices_used||0)+'</td></tr>';
+    }).join('');
+    $('#mTable').innerHTML=h;
+  }
+  $('#mGo').onclick=loadMembers; $('#mRefresh').onclick=loadMembers;
+  $('#mSearch').addEventListener('keydown',function(e){ if(e.key==='Enter') loadMembers(); });
+
+  // ---- codes ----
+  var lastCodes=[];
+  async function genCodes(){
+    var pv=$('#gPlan').value.split('|'); var plan=pv[0], days=+pv[1];
+    var r=await rpc('admin_generate_codes',{p_plan:plan, p_duration_days:days, p_add_stores:+$('#gStores').value||10, p_count:+$('#gCount').value||10, p_batch:$('#gBatch').value.trim()});
+    if(!r||!r.ok){ toast('生成失败：'+((r&&r.status)||'未知')); return; }
+    lastCodes=r.codes||[];
+    var box=$('#gOut'); box.classList.remove('hidden'); box.textContent=lastCodes.join('\n');
+    $('#gActions').classList.remove('hidden'); toast('已生成 '+r.count+' 个兑换码'); loadCodes();
+  }
+  $('#gGo').onclick=genCodes;
+  $('#gCopy').onclick=function(){ navigator.clipboard.writeText(lastCodes.join('\n')).then(function(){toast('已复制到剪贴板');},function(){toast('复制失败，请手动选择');}); };
+  async function loadCodes(){
+    var st=await rpc('admin_list_codes',{p_status:$('#cStatus').value, p_limit:500});
+    if(!st||!st.ok){ $('#cTable').innerHTML=''; return; }
+    var rows=st.rows||[];
+    if(!rows.length){ $('#cTable').innerHTML='<tr><td class="empty">暂无兑换码</td></tr>'; return; }
+    var h='<tr><th>兑换码</th><th>状态</th><th>套餐</th><th>天数</th><th>店铺</th><th>使用者</th><th>批次</th><th></th></tr>';
+    h+=rows.map(function(r){
+      var tag=r.status==='unused'?'<span class="tag on">未用</span>':(r.status==='used'?'<span class="tag mut">已用</span>':'<span class="tag off">已吊销</span>');
+      var rev=r.status==='unused'?('<button class="btn sm danger" data-rev="'+esc(r.code)+'">吊销</button>'):'';
+      return '<tr><td style="font-family:ui-monospace,monospace">'+esc(r.code)+'</td><td>'+tag+'</td><td>'+esc(r.plan)+'</td><td>'+(r.duration_days==null?'终身':r.duration_days)+'</td><td>'+(r.add_stores||0)+'</td><td>'+esc(r.used_by_email||'—')+'</td><td>'+esc(r.batch||'')+'</td><td>'+rev+'</td></tr>';
+    }).join('');
+    $('#cTable').innerHTML=h;
+    $('#cTable').querySelectorAll('[data-rev]').forEach(function(b){ b.onclick=function(){ revoke(b.getAttribute('data-rev')); }; });
+  }
+  async function revoke(code){ if(!confirm('确定吊销兑换码 '+code+' ？')) return; var r=await rpc('admin_revoke_code',{p_code:code}); if(r&&r.ok){ toast('已吊销 '+code); loadCodes(); } else toast('吊销失败：'+((r&&r.status)||'')); }
+  $('#cGo').onclick=loadCodes;
+
+  // ---- feedback ----
+  async function loadFeedback(){
+    var st=await rpc('admin_list_feedback',{p_limit:200});
+    if(!st||!st.ok){ $('#fList').innerHTML='<div class="empty">加载失败</div>'; return; }
+    var rows=st.rows||[]; $('#fCount').textContent=rows.length? ('共 '+rows.length+' 条（最新）'):'';
+    if(!rows.length){ $('#fList').innerHTML='<div class="empty">暂无反馈</div>'; return; }
+    $('#fList').innerHTML=rows.map(function(r){
+      return '<div class="fb"><div class="meta">'+fmtDate(r.created_at)+' · '+esc(r.email||'匿名')+' · v'+esc(r.ver||'?')+' · '+esc(r.region||'')+' · '+esc(r.plan||'')+(r.contact?(' · 联系 '+esc(r.contact)):'')+'</div>'+
+        '<div class="msg">'+esc(r.message||'')+'</div>'+ (r.log?('<pre>'+esc(r.log)+'</pre>'):'') +'</div>';
+    }).join('');
+  }
+  $('#fGo').onclick=loadFeedback;
+
+  // ---- telemetry ----
+  async function loadTelemetry(){
+    var st=await rpc('admin_telemetry',{p_hours:+$('#tHours').value||24});
+    if(!st||!st.ok){ return; }
+    var ev=st.top_events||[], vv=st.by_version||[];
+    $('#tEvents').innerHTML= ev.length?('<tr><th>事件</th><th>次数</th></tr>'+ev.map(function(e){return '<tr><td>'+esc(e.event)+'</td><td>'+e.n+'</td></tr>';}).join('')):'<tr><td class="empty">无数据</td></tr>';
+    $('#tVersions').innerHTML= vv.length?('<tr><th>版本</th><th>次数</th></tr>'+vv.map(function(e){return '<tr><td>'+esc(e.ver)+'</td><td>'+e.n+'</td></tr>';}).join('')):'<tr><td class="empty">无数据</td></tr>';
+  }
+  $('#tGo').onclick=loadTelemetry;
+
+  tryRestore();
+})();
+</script>
+</body>
+</html>
