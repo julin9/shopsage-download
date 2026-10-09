@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>ShopSage</title>
+<link rel="icon" type="image/png" href="./logo128.png">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:"Microsoft YaHei","PingFang SC",Arial,sans-serif; background:#f0f4f3; color:#222; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px; }
+  .card { background:#fff; border-radius:16px; box-shadow:0 8px 32px rgba(14,124,102,.12); max-width:440px; width:100%; padding:40px 34px; text-align:center; }
+  .logo { width:72px; height:72px; margin-bottom:14px; }
+  .ok-badge { width:64px; height:64px; border-radius:50%; background:#E8F3F0; display:flex; align-items:center; justify-content:center; margin:0 auto 18px; }
+  .ok-badge svg { width:34px; height:34px; stroke:#0E7C66; }
+  h1 { font-size:21px; color:#0E7C66; margin-bottom:10px; }
+  p { font-size:14px; color:#555; line-height:1.8; margin-bottom:8px; }
+  .tip { margin-top:18px; font-size:13px; color:#8a9491; background:#F3FAF8; border-radius:10px; padding:12px 14px; line-height:1.7; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <img class="logo" src="./logo128.png" alt="ShopSage">
+    <div class="ok-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+    </div>
+    <h1>邮箱验证成功</h1>
+    <p>你的 ShopSage 账号邮箱已确认，现在可以回到插件登录使用了。</p>
+    <div class="tip">打开 Chrome，进入 TikTok 商家后台右下角的 ShopSage 面板，用刚才注册的邮箱和密码登录即可。此页面可以关闭。</div>
+  </div>
+<script>
+  // 智能路由：带 ?code= 的是「重置密码」链接（PKCE），转交给已验证可用的 plugin-reset.html；
+  // 其余情况（邮箱确认落地）就显示上面的「验证成功」。这样无论 redirect_to 是否被放行都正确。
+  (function () {
+    try {
+      if (/[?&#]code=/i.test(location.search + location.hash)) {
+        location.replace('plugin-reset.html' + location.search + location.hash);
+      }
+    } catch (e) {}
+  })();
+</script>
+</body>
+</html>
