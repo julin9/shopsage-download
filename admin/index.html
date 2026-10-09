@@ -174,7 +174,7 @@
   </div>
 
   <div class="tab hidden" id="tab-telemetry">
-    <div class="card"><div class="row"><div class="f"><label>时间范围</label><select id="tHours"><option value="24">近 24 小时</option><option value="72">近 3 天</option><option value="168">近 7 天</option></select></div><button class="btn btn-sm" id="tGo">刷新</button></div></div>
+    <div class="card"><div class="row"><div class="f"><label>时间范围</label><select id="tHours"><option value="24">近 24 小时</option><option value="72">近 3 天</option><option value="168">近 7 天</option></select></div><button class="btn btn-sm" id="tGo">刷新</button><div class="f"><label>清理早于(天)</label><input id="purgeDays" type="number" value="90" min="1" max="3650" /></div><button class="btn btn-sm btn-danger" id="purgeGo">清理旧遥测/反馈</button></div></div>
     <div class="cards" style="grid-template-columns:1fr 1fr"><div class="card" style="margin:0"><div class="pt"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>事件 TOP</div><table id="tEvents"></table></div>
     <div class="card" style="margin:0"><div class="pt"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>版本分布</div><table id="tVersions"></table></div></div>
   </div>
@@ -216,7 +216,7 @@
 
   async function loadOverview(){
     var st=await rpc('admin_stats'); if(!st||!st.ok){ $('#statCards').innerHTML='<div class="empty">无权限或加载失败</div>'; return; }
-    var items=[['活跃会员',st.active_members,''],['会员总数',st.members_total,''],['7天内到期',st.expiring_7d,'acc'],['已过期',st.expired,'bad'],['未用兑换码',st.codes_unused,''],['已用兑换码',st.codes_used,''],['已吊销码',st.codes_revoked,''],['注册用户',st.total_users,''],['未处理反馈',st.feedback_total,'acc'],['24h事件',st.events_24h,''],['24h错误',st.error_events_24h,'bad']];
+    var items=[['活跃会员',st.active_members,''],['会员总数',st.members_total,''],['7天内到期',st.expiring_7d,'acc'],['已过期',st.expired,'bad'],['未用兑换码',st.codes_unused,''],['已用兑换码',st.codes_used,''],['已吊销码',st.codes_revoked,''],['注册用户',st.total_users,''],['未处理反馈',st.feedback_open,'acc'],['反馈总数',st.feedback_total,''],['24h事件',st.events_24h,''],['24h错误',st.error_events_24h,'bad']];
     $('#statCards').innerHTML=items.map(function(it){return '<div class="stat '+it[2]+'"><div class="n">'+(+it[1]||0)+'</div><div class="l">'+esc(it[0])+'</div></div>';}).join('');
   }
   async function loadExpiring(csv){
@@ -306,6 +306,7 @@
     $('#tVersions').innerHTML= vv.length?('<thead><tr><th>版本</th><th>次数</th></tr></thead><tbody>'+vv.map(function(e){return '<tr><td class="mono">'+esc(e.ver)+'</td><td class="mono">'+e.n+'</td></tr>';}).join('')+'</tbody>'):'<tr><td class="empty">无数据</td></tr>';
   }
   $('#tGo').onclick=loadTelemetry;
+  $('#purgeGo').onclick=async function(){ var d=+$('#purgeDays').value||90; if(!confirm('删除 '+d+' 天前的遥测事件、以及 365 天前的反馈？不可恢复。')) return; var r=await rpc('admin_purge',{p_event_days:d, p_feedback_days:365}); if(r&&r.ok){ toast('已清理：遥测 '+r.events_deleted+' 条 · 反馈 '+r.feedback_deleted+' 条'); loadTelemetry(); } else toast('失败:'+((r&&r.status)||'')); };
 
   tryRestore();
 })();
