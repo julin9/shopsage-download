@@ -71,7 +71,24 @@
   #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--ink);color:#fff;padding:12px 22px;border-radius:11px;font-size:14px;box-shadow:var(--shadow);opacity:0;transition:.25s;pointer-events:none;z-index:99}
   #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
   #loginWrap{max-width:400px;margin:8vh auto 0}
-  @media(max-width:640px){.cards{grid-template-columns:1fr 1fr}.barmenu .em span{display:none}}
+  @media(max-width:760px){
+    .wrap{padding:16px 12px 60px}
+    .bar .in{height:auto;min-height:56px;padding:10px 14px;flex-wrap:wrap;gap:8px}
+    .brand{font-size:16px}.brand img{width:28px;height:28px}
+    .barmenu{width:100%;justify-content:space-between}
+    .tabs{overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+    .tabs::-webkit-scrollbar{display:none}
+    .tabs button{white-space:nowrap;padding:10px 12px}
+    .row{flex-direction:column;align-items:stretch;gap:10px}
+    .row .f{width:100%!important;min-width:0!important}
+    .row .btn,.row button{width:100%;justify-content:center}
+    .cards{grid-template-columns:1fr 1fr;gap:10px}
+    .stat{padding:13px 14px}.stat .n{font-size:22px}
+    #mTable,#cTable{min-width:640px}
+    .acts{gap:6px}
+    .fb .meta{gap:6px}
+    .codes{max-height:200px}
+  }
 </style>
 </head>
 <body>
