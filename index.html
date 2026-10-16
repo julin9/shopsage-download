@@ -24,6 +24,9 @@
   .wordmark{font-size:26px;font-weight:800;letter-spacing:-.3px;color:var(--ink);line-height:1.1}
   .wordmark b{color:var(--brand)}
   .slogan{font-size:13px;color:var(--muted);margin-bottom:18px;letter-spacing:.5px}
+  .mascot{width:150px;height:auto;display:block;margin:0 auto 8px;filter:drop-shadow(0 14px 22px rgba(11,53,88,.18));animation:float 5s ease-in-out infinite}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+  @media (prefers-reduced-motion: reduce){.mascot{animation:none}}
   h1{font-size:22px;color:var(--ink);margin-bottom:6px;font-weight:800;letter-spacing:-.3px}
   .ver{display:inline-block;color:var(--brand-deep);background:var(--brand-050);font-size:13px;font-weight:600;padding:5px 14px;border-radius:999px;margin-bottom:22px}
   .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--brand);color:#fff;text-decoration:none;font-size:17px;font-weight:700;padding:15px 46px;border-radius:14px;margin:2px 0 12px;box-shadow:rgba(11,53,88,.18) 0 10px 24px -10px;transition:background .18s,transform .18s}
@@ -50,6 +53,7 @@
 </head>
 <body>
   <div class="card">
+    <img class="mascot" src="https://get.shopsage.cc/robot/v1/png/welcome.png" alt="ShopSage 小助手">
     <div class="brandrow">
       <img class="logo" src="./logo128.png" alt="ShopSage">
       <div class="wordmark">Shop<b>Sage</b></div>
