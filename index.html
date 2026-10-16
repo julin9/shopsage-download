@@ -3,70 +3,94 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="ShopSage自动插件 V4.9.23 官方下载页 — TikTok Shop 商品机会自动提报 + 达人自动邀约 + 达人 CRM + AI 私信，邮箱账号登录、兑换码订阅，内置防风控节奏、台账云同步与导出。">
+<meta name="description" content="ShopSage 自动插件 V4.9.23 官方下载页 — TikTok Shop 商品机会自动提报 + 达人自动邀约 + 达人 CRM + AI 私信，邮箱账号登录、兑换码订阅，内置防风控节奏、台账云同步与导出。">
 <meta name="keywords" content="ShopSage,TikTok Shop,商品机会,自动提报,达人邀约,电商工具">
 <meta name="author" content="ShopSage">
 <meta name="robots" content="index,follow">
-<meta name="generator" content="ShopSage Web Team">
-<title>ShopSage自动插件 自动提报 + 达人邀约 + 达人CRM + AI私信 V4.9.23 官方下载</title>
+<meta name="theme-color" content="#1A6FF5">
+<title>ShopSage 自动插件 · 自动提报 + 达人邀约 + 达人CRM + AI私信 · 官方下载</title>
 <link rel="icon" type="image/png" href="./logo128.png">
 <style>
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { font-family:"Microsoft YaHei","PingFang SC",sans-serif; background:#f0f4f3; color:#222; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px; }
-  .card { background:#fff; border-radius:16px; box-shadow:0 8px 32px rgba(14,124,102,.12); max-width:640px; width:100%; padding:40px 36px; text-align:center; }
-  img.logo { width:96px; height:96px; margin-bottom:12px; }
-  h1 { font-size:26px; color:#0E7C66; margin-bottom:4px; }
-  .ver { color:#888; font-size:14px; margin-bottom:20px; }
-  .btn { display:inline-block; background:#0E7C66; color:#fff; text-decoration:none; font-size:18px; font-weight:bold; padding:14px 48px; border-radius:10px; margin:8px 0 20px; transition:background .2s; }
-  .btn:hover { background:#0a5f4f; }
-  .size { color:#999; font-size:13px; margin-bottom:24px; }
-  .features { text-align:left; background:#F3FAF8; border-radius:10px; padding:18px 22px; margin-bottom:20px; }
-  .features li { list-style:none; font-size:14px; line-height:1.9; color:#333; }
-  .features li::before { content:"✔ "; color:#0E7C66; font-weight:bold; }
-  .steps { text-align:left; font-size:14px; line-height:1.9; color:#444; margin-bottom:20px; }
-  .steps b { color:#0E7C66; }
-  .note { font-size:12px; color:#b35900; background:#FFF7EE; border-radius:8px; padding:10px 14px; text-align:left; line-height:1.7; }
-  .foot { display:flex; justify-content:space-between; align-items:center; gap:18px; margin-top:18px; padding-top:14px; border-top:1px solid #eef2f7; text-align:left; }
-  .foot-left { color:#9aa5a3; font-size:12px; line-height:1.7; }
-  .foot-qr { flex:0 0 auto; text-align:center; }
-  .foot-qr img { width:96px; height:96px; display:block; border:1px solid #e2e8f0; border-radius:10px; padding:4px; background:#fff; }
-  .foot-qr span { display:block; margin-top:5px; font-size:11px; font-weight:bold; color:#0E7C66; line-height:1.4; }
+  :root{
+    --brand:#1A6FF5;--brand-deep:#0B4FD6;--brand-050:#EAF2FF;--brand-100:#D8E8FF;
+    --ink:#0B3558;--muted:#476788;--line:#D4E0ED;--bg:#F6F8FC;--pebble:#F0F3F8;--warn:#B54708;
+    --shadow:rgba(11,53,88,.05) 0 4px 8px,rgba(11,53,88,.06) 0 16px 32px -8px,rgba(11,53,88,.08) 0 36px 64px -16px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",Segoe UI,sans-serif;background:radial-gradient(900px 400px at 85% -8%,rgba(76,147,255,.12),transparent),linear-gradient(180deg,#fff,var(--bg));color:var(--ink);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:28px 18px;line-height:1.7;-webkit-font-smoothing:antialiased}
+  .card{background:#fff;border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);max-width:680px;width:100%;padding:44px 40px;text-align:center}
+  .brandrow{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:6px}
+  img.logo{width:56px;height:56px;border-radius:14px}
+  .wordmark{font-size:26px;font-weight:800;letter-spacing:-.3px;color:var(--ink);line-height:1.1}
+  .wordmark b{color:var(--brand)}
+  .slogan{font-size:13px;color:var(--muted);margin-bottom:18px;letter-spacing:.5px}
+  h1{font-size:22px;color:var(--ink);margin-bottom:6px;font-weight:800;letter-spacing:-.3px}
+  .ver{display:inline-block;color:var(--brand-deep);background:var(--brand-050);font-size:13px;font-weight:600;padding:5px 14px;border-radius:999px;margin-bottom:22px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--brand);color:#fff;text-decoration:none;font-size:17px;font-weight:700;padding:15px 46px;border-radius:14px;margin:2px 0 12px;box-shadow:rgba(11,53,88,.18) 0 10px 24px -10px;transition:background .18s,transform .18s}
+  .btn:hover{background:var(--brand-deep);transform:translateY(-1px)}
+  .btn:active{transform:scale(.98)}
+  .btn svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .size{color:var(--muted);font-size:13px;margin-bottom:26px}
+  .sec-t{text-align:left;font-size:13px;font-weight:700;color:var(--brand);letter-spacing:1px;text-transform:uppercase;margin:0 0 10px}
+  .features{text-align:left;background:var(--pebble);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin-bottom:22px}
+  .features li{list-style:none;font-size:14px;line-height:1.9;color:#334155;position:relative;padding-left:26px;margin:2px 0}
+  .features li::before{content:"";position:absolute;left:2px;top:11px;width:14px;height:14px;border-radius:50%;background:var(--brand-050)}
+  .features li::after{content:"";position:absolute;left:6px;top:14px;width:5px;height:9px;border:2px solid var(--brand);border-top:0;border-left:0;transform:rotate(40deg)}
+  .steps{text-align:left;font-size:14px;line-height:1.95;color:var(--muted);background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px 22px;margin-bottom:18px}
+  .steps b{color:var(--brand-deep)}
+  .steps code{background:var(--pebble);border-radius:5px;padding:1px 6px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;color:var(--ink)}
+  .note{font-size:12.5px;color:var(--warn);background:#FFF7EE;border:1px solid #FBE3C4;border-radius:12px;padding:12px 16px;text-align:left;line-height:1.75}
+  .foot{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-top:24px;padding-top:18px;border-top:1px solid var(--line);text-align:left}
+  .foot-left{color:var(--muted);font-size:12px;line-height:1.75}
+  .foot-qr{flex:0 0 auto;text-align:center}
+  .foot-qr img{width:96px;height:96px;display:block;border:1px solid var(--line);border-radius:12px;padding:5px;background:#fff}
+  .foot-qr span{display:block;margin-top:6px;font-size:11px;font-weight:700;color:var(--brand-deep);line-height:1.5}
+  @media(max-width:520px){.card{padding:32px 20px}h1{font-size:19px}.foot{flex-direction:column-reverse;text-align:center}.foot-left{text-align:center}}
 </style>
 </head>
 <body>
   <div class="card">
-    <img class="logo" src="./logo128.png" alt="ShopSage">
-    <h1>ShopSage自动插件 · 自动提报 + 达人邀约</h1>
+    <div class="brandrow">
+      <img class="logo" src="./logo128.png" alt="ShopSage">
+      <div class="wordmark">Shop<b>Sage</b></div>
+    </div>
+    <div class="slogan">让运营得心应手 · TikTok Shop 卖家运营自动化</div>
+
+    <h1>ShopSage 自动插件 · 官方下载</h1>
     <div class="ver">V4.9.23 · 邮箱账号 + 兑换码订阅 · 2026-10</div>
-    <a class="btn" href="./shopsage-v4.9.23.zip" download="ShopSage-v4.9.23-客户安装包.zip">下载安装包</a>
-    <div class="size">Windows / Chrome · 约 0.29 MB · 含使用说明</div>
+
+    <a class="btn" href="./shopsage-v4.9.23.zip" download="ShopSage-v4.9.23-客户安装包.zip">下载安装包 <svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M5 21h14"/></svg></a>
+    <div class="size">Windows / Chrome · 约 0.4 MB · 含使用说明</div>
+
+    <div class="sec-t">核心能力</div>
     <ul class="features">
       <li>自动遍历热门关键词商品机会，全选在售商品一键提报</li>
       <li>无在售商品 / 已提报的机会自动跳过，不浪费配额</li>
-      <li>自动滚动加载全列表，挂机跑完自动出汇总</li>
       <li>达人自动邀约：批量 / 逐个双模式，覆盖发现达人、定向合作、达人管理三个入口</li>
+      <li>达人 CRM 分层：自动汇总粉丝 / GMV / 建联状态，一键分档、打标签、跟进到期提醒</li>
+      <li>私信 AI 话术：多语言自动生成，一键填入输入框，你核对后点发送（不代发，防封店）</li>
       <li>邀约台账本地留存 + 一键导出 CSV（粉丝、类目、GMV、联系方式、是否发样等 27 列）</li>
-      <li>内置防风控：随机间隔与长休、每日 / 每小时上限、安全时段、7 天不重复、命中验证码立即停机</li>
+      <li>内置防风控：随机间隔与长休、每日 / 每小时上限、安全时段、命中验证码立即停机</li>
       <li>全国家通用：中 / 英 / 泰 / 越 / 印尼等后台界面均可自动识别操作</li>
-      <li>悬浮球可拖动、松手自动贴边，不再遮挡页面按钮</li>
       <li>全新邮箱账号体系：注册 / 登录、忘记密码邮件自助重置，一个账号多设备多店铺通用</li>
-      <li>兑换码订阅月 / 季 / 年卡，默认含 10 个店铺额度，支持紫鸟多店，到期可在面板内续费兑换</li>
-      <li>版本更新主动提醒：悬浮球红点 + 更新日志弹窗 + 强制更新机制</li>
-      <li>注册邮箱验证，杜绝填错邮箱；忘记密码邮件自助重置</li>
-      <li>面板内一键反馈（自动带版本与运行日志）+ 本次/今日运行统计 + 会员临期续费提醒</li>
+      <li>兑换码订阅月 / 季 / 年卡，默认含 10 个店铺额度，支持紫鸟多店，面板内可续费兑换</li>
     </ul>
+
+    <div class="sec-t">安装四步</div>
     <div class="steps">
-      <b>安装四步：</b><br>
-      1. 下载并解压 zip（保留「插件」文件夹位置不要移动）<br>
-      2. Chrome 打开 chrome://extensions → 开启右上角「开发者模式」<br>
-      3. 「加载已解压的扩展程序」→ 选择解压出的「插件」文件夹<br>
-      4. 登录 TikTok 商家后台，在右下角面板用邮箱注册 / 登录，并粘贴客服发的兑换码开通 Pro 会员<br>（紫鸟 / 站斧用户请看包内说明「五、跨境浏览器安装」）
+      <b>1.</b> 下载并解压 zip（保留「插件」文件夹位置不要移动）<br>
+      <b>2.</b> Chrome 打开 <code>chrome://extensions</code> → 开启右上角「开发者模式」<br>
+      <b>3.</b> 「加载已解压的扩展程序」→ 选择解压出的「插件」文件夹<br>
+      <b>4.</b> 登录 TikTok 商家后台，右下角面板用邮箱注册 / 登录，粘贴客服发的兑换码开通 Pro<br>
+      <span style="color:var(--muted)">（紫鸟 / 站斧用户请看包内说明「五、跨境浏览器安装」）</span>
     </div>
+
     <div class="note">
-      注意：安装包不含兑换码，请凭购买记录向客服领取；兑换码一码一次、绑定邮箱账号，一个账号可在多设备 / 多店铺窗口登录使用；忘记密码可在登录页自助邮件重置；具体操作以包内《ShopSage使用说明》为准。
+      注意：安装包不含兑换码，请凭购买记录向客服领取；兑换码一码一次、绑定邮箱账号，一个账号可在多设备 / 多店铺窗口登录使用；忘记密码可在登录页自助邮件重置；具体操作以包内《ShopSage 使用说明》为准。
     </div>
+
     <div class="foot">
-      <div class="foot-left">© 2026 ShopSage · 本页面为 ShopSage自动插件 官方下载页<br>安装包不含兑换码，请扫码或凭购买记录向客服领取</div>
+      <div class="foot-left">© 2026 ShopSage · 本页面为 ShopSage 自动插件官方下载页<br>安装包不含兑换码，请扫码或凭购买记录向客服领取</div>
       <div class="foot-qr">
         <img src="./key-qr.jpg" alt="购买渠道二维码">
         <span>购买 / 续费渠道<br>扫码添加客服</span>
