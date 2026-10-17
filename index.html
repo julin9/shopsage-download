@@ -27,6 +27,21 @@
   .mascot{width:150px;height:auto;display:block;margin:0 auto 8px;filter:drop-shadow(0 14px 22px rgba(11,53,88,.18));animation:float 5s ease-in-out infinite}
   @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
   @media (prefers-reduced-motion: reduce){.mascot{animation:none}}
+  /* 开屏：IP 猫先打招呼，再让下载页淡入 */
+  #splash{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:radial-gradient(700px 400px at 50% 20%,rgba(76,147,255,.18),transparent),linear-gradient(180deg,#fff,#EAF2FF);animation:splashOut .7s cubic-bezier(.22,.61,.36,1) 1.7s forwards}
+  #splash .sp-img{width:210px;max-width:60vw;height:auto;filter:drop-shadow(0 18px 30px rgba(11,53,88,.22));animation:spPop .8s cubic-bezier(.22,.61,.36,1) both}
+  #splash .sp-word{font-size:28px;font-weight:800;color:var(--ink);letter-spacing:-.3px;animation:spRise .7s cubic-bezier(.22,.61,.36,1) .15s both}
+  #splash .sp-word b{color:var(--brand)}
+  #splash .sp-slogan{font-size:14px;color:var(--muted);letter-spacing:1px;animation:spRise .7s cubic-bezier(.22,.61,.36,1) .3s both}
+  #splash .sp-load{margin-top:6px;width:120px;height:4px;border-radius:4px;background:var(--brand-100);overflow:hidden;animation:spRise .6s ease .45s both}
+  #splash .sp-load i{display:block;height:100%;width:40%;border-radius:4px;background:var(--brand);animation:spBar 1.6s cubic-bezier(.5,0,.5,1) .3s infinite}
+  @keyframes splashOut{to{opacity:0;visibility:hidden;transform:translateY(-18px)}}
+  @keyframes spPop{0%{opacity:0;transform:scale(.8) translateY(10px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+  @keyframes spRise{0%{opacity:0;transform:translateY(12px)}100%{opacity:1;transform:translateY(0)}}
+  @keyframes spBar{0%{transform:translateX(-120%)}100%{transform:translateX(320%)}}
+  .card{animation:cardIn .7s cubic-bezier(.22,.61,.36,1) 1.55s both}
+  @keyframes cardIn{0%{opacity:0;transform:translateY(26px) scale(.99)}100%{opacity:1;transform:translateY(0) scale(1)}}
+  @media (prefers-reduced-motion: reduce){#splash{display:none !important}.card{animation:none !important}}
   h1{font-size:22px;color:var(--ink);margin-bottom:6px;font-weight:800;letter-spacing:-.3px}
   .ver{display:inline-block;color:var(--brand-deep);background:var(--brand-050);font-size:13px;font-weight:600;padding:5px 14px;border-radius:999px;margin-bottom:22px}
   .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--brand);color:#fff;text-decoration:none;font-size:17px;font-weight:700;padding:15px 46px;border-radius:14px;margin:2px 0 12px;box-shadow:rgba(11,53,88,.18) 0 10px 24px -10px;transition:background .18s,transform .18s}
@@ -52,6 +67,12 @@
 </style>
 </head>
 <body>
+  <div id="splash" onclick="this.style.display='none'" aria-hidden="true">
+    <img class="sp-img" src="https://get.shopsage.cc/robot/v1/gif/welcome.gif" alt="ShopSage 小助手">
+    <div class="sp-word">Shop<b>Sage</b></div>
+    <div class="sp-slogan">让运营得心应手 · 正在为你打开下载页</div>
+    <div class="sp-load"><i></i></div>
+  </div>
   <div class="card">
     <img class="mascot" src="https://get.shopsage.cc/robot/v1/png/welcome.png" alt="ShopSage 小助手">
     <div class="brandrow">
@@ -101,5 +122,6 @@
       </div>
     </div>
   </div>
+<script>setTimeout(function(){var s=document.getElementById('splash');if(s){s.style.display='none';}},3000);</script>
 </body>
 </html>
