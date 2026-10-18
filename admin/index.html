@@ -72,6 +72,13 @@
   th.sortable:hover{color:var(--brand)}
   th.sortable .arw{opacity:.55;font-size:10px;margin-left:3px}
   input[type=date]{min-width:132px}
+  .mfilter{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:13px}
+  .chip{border:1px solid var(--brand-100);background:#fff;color:var(--brand-deep);border-radius:999px;padding:4px 12px;font-size:12.5px;font-weight:600;cursor:pointer;transition:.15s;display:inline-flex;align-items:center}
+  .chip:hover{background:var(--brand-050)}
+  .chip.on{background:var(--grad);color:#fff;border-color:transparent}
+  .chip.saved{background:var(--brand-050);border-color:var(--brand-light)}
+  .chip.saved .x{margin-left:7px;color:var(--danger);font-weight:800;font-size:14px;line-height:1}
+  .chip.saved .x:hover{opacity:.7}
   #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--ink);color:#fff;padding:12px 22px;border-radius:11px;font-size:14px;box-shadow:var(--shadow);opacity:0;transition:.25s;pointer-events:none;z-index:99}
   #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
   #loginWrap{max-width:400px;margin:8vh auto 0}
@@ -127,7 +134,8 @@
   <div class="tab" id="tab-overview">
     <div class="cards" id="statCards"><div class="empty">加载中…</div></div>
     <div class="card" style="margin-top:14px"><div class="pt"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>到期提醒</div>
-      <div class="row"><div class="f"><label>提前天数</label><input id="expDays" type="number" value="7" min="1" max="90" /></div><button class="btn btn-sm" id="expGo">查看即将到期</button><button class="btn btn-ghost btn-sm" id="expCsv">导出 CSV</button></div>
+      <div class="row"><div class="f"><label>提前天数</label><input id="expDays" type="number" value="30" min="1" max="90" /></div><button class="btn btn-sm" id="expGo">查看即将到期</button><button class="btn btn-ghost btn-sm" id="expCsv">导出 CSV</button><button class="btn btn-ghost btn-sm" id="expGoMembers" title="在「用户与会员」里用同样条件筛选并排序">在用户列表中查看 →</button></div>
+      <div class="muted" style="margin-top:8px">默认展示 30 天内到期（含已过期除外）的会员，按到期时间从近到远排序。</div>
       <div style="overflow:auto;max-height:340px;margin-top:12px"><table id="expTb"></table></div>
     </div>
   </div>
@@ -150,6 +158,17 @@
         <button class="btn btn-ghost btn-sm" id="mReset">重置</button>
         <button class="btn btn-ghost btn-sm" id="mRefresh">刷新</button>
         <button class="btn btn-ghost btn-sm" id="mCsv">导出 CSV</button>
+      </div>
+      <div class="mfilter" style="margin-top:8px"><span class="muted">快捷筛选：</span>
+        <button class="chip" type="button" data-qf="exp30">30天内到期</button>
+        <button class="chip" type="button" data-qf="exp7">7天内到期</button>
+        <button class="chip" type="button" data-qf="expired">已过期</button>
+        <button class="chip" type="button" data-qf="lifetime">终身</button>
+        <button class="chip" type="button" data-qf="suspended">已冻结</button>
+        <button class="chip" type="button" data-qf="monthreg">本月新注册</button>
+      </div>
+      <div class="mfilter" style="margin-top:10px"><span class="muted">我的常用：</span><span id="presetWrap" class="muted" style="font-weight:400">暂无，调好筛选条件后点「保存当前筛选」</span>
+        <button class="btn btn-ghost btn-sm" id="mSavePreset" style="margin-left:6px">保存当前筛选</button>
       </div>
       <div class="muted" id="mCount" style="margin-top:10px"></div>
     </div>
@@ -235,6 +254,7 @@
     var st=await rpc('admin_stats'); if(!st||!st.ok){ $('#statCards').innerHTML='<div class="empty">无权限或加载失败</div>'; return; }
     var items=[['活跃会员',st.active_members,''],['会员总数',st.members_total,''],['7天内到期',st.expiring_7d,'acc'],['已过期',st.expired,'bad'],['未用兑换码',st.codes_unused,''],['已用兑换码',st.codes_used,''],['已吊销码',st.codes_revoked,''],['注册用户',st.total_users,''],['未处理反馈',st.feedback_open,'acc'],['反馈总数',st.feedback_total,''],['24h事件',st.events_24h,''],['24h错误',st.error_events_24h,'bad']];
     $('#statCards').innerHTML=items.map(function(it){return '<div class="stat '+it[2]+'"><div class="n">'+(+it[1]||0)+'</div><div class="l">'+esc(it[0])+'</div></div>';}).join('');
+    try{ loadExpiring(false); }catch(e){}
   }
   async function loadExpiring(csv){
     var d=+$('#expDays').value||7; var st=await rpc('admin_expiring',{p_days:d}); if(!st||!st.ok){ toast('加载失败'); return; }
@@ -243,6 +263,7 @@
     $('#expTb').innerHTML= rows.length?('<thead><tr><th>邮箱</th><th>套餐</th><th>到期</th><th>店铺</th></tr></thead><tbody>'+rows.map(function(r){return '<tr><td>'+esc(r.email)+'</td><td>'+esc(r.plan)+'</td><td><span class="badge warn">'+fmtDate(r.expires_at)+'</span></td><td class="mono">'+(r.stores_used||0)+'/'+(r.max_stores||0)+'</td></tr>';}).join('')+'</tbody>'):'<tr><td class="empty">该时间段内无到期会员</td></tr>';
   }
   $('#expGo').onclick=function(){loadExpiring(false);}; $('#expCsv').onclick=function(){loadExpiring(true);};
+  $('#expGoMembers').onclick=function(){ clearFilterInputs(); $('#mStatus').value='exp30'; $('#mSort').value='exp_asc'; tab('members'); };
 
   var MEMBERS_LAST=[];
   function dayStartIso(v){ return v? new Date(v+'T00:00:00').toISOString() : null; }
@@ -321,13 +342,30 @@
   $('#mCsv').onclick=function(){
     if(!MEMBERS_LAST.length){ toast('无数据可导出'); return; }
     download('ShopSage-会员名单-'+new Date().toISOString().slice(0,10)+'.csv', csvOf(
-      ['邮箱','套餐','状态','到期时间','注册时间','店铺(近30天/上限)','设备(近30天/上限)'],
+      ['邮箱','套餐','状态','到期时间','剩余天数','注册时间','店铺(近30天/上限)','设备(近30天/上限)'],
       MEMBERS_LAST.map(function(r){
         var alive=!!(r.expires_at && new Date(r.expires_at)>new Date());
         var st=r.suspended?'已冻结':(r.lifetime?'终身':(alive?'生效中':'已过期'));
-        return [r.email,r.plan||'',st,r.lifetime?'终身':fmtDate(r.expires_at),fmtDate(r.created_at),(r._su||0)+'/'+(r.max_stores||0),(r._dv||0)+'/'+(r.max_devices||0)];
+        var rem = r.lifetime ? '终身' : (r.expires_at ? Math.ceil((new Date(r.expires_at)-new Date())/864e5) : '—');
+        return [r.email,r.plan||'',st,r.lifetime?'终身':fmtDate(r.expires_at),rem,fmtDate(r.created_at),(r._su||0)+'/'+(r.max_stores||0),(r._dv||0)+'/'+(r.max_devices||0)];
       })));
   };
+  // ---------- 会员：快捷筛选 + 常用筛选保存 ----------
+  var __presetMem=[];
+  function lsGet(){ try{ var v=localStorage.getItem('shopsage_admin_presets_v1'); return v?JSON.parse(v):[]; }catch(e){ return __presetMem.slice(); } }
+  function lsSet(a){ try{ localStorage.setItem('shopsage_admin_presets_v1', JSON.stringify(a)); }catch(e){ __presetMem=a.slice(); } }
+  function clearChipOn(){ document.querySelectorAll('#tab-members .chip[data-qf]').forEach(function(x){ x.classList.remove('on'); }); }
+  function fmtInputDate(d){ var p=function(n){return (n<10?'0':'')+n;}; return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate()); }
+  function clearFilterInputs(){ ['mSearch','mRegFrom','mRegTo','mExpFrom','mExpTo'].forEach(function(id){var e=$('#'+id); if(e)e.value='';}); $('#mPlan').value=''; $('#mStatus').value=''; $('#mSort').value='exp_asc'; $('#mLimit').value='500'; }
+  function memFilterState(){ return { search:$('#mSearch').value||'', plan:$('#mPlan').value||'', status:$('#mStatus').value||'', sort:$('#mSort').value||'exp_asc', regFrom:$('#mRegFrom').value||'', regTo:$('#mRegTo').value||'', expFrom:$('#mExpFrom').value||'', expTo:$('#mExpTo').value||'', limit:$('#mLimit').value||'500' }; }
+  function setFilterState(s){ $('#mSearch').value=s.search||''; $('#mPlan').value=s.plan||''; $('#mStatus').value=s.status||''; $('#mSort').value=s.sort||'exp_asc'; $('#mRegFrom').value=s.regFrom||''; $('#mRegTo').value=s.regTo||''; $('#mExpFrom').value=s.expFrom||''; $('#mExpTo').value=s.expTo||''; $('#mLimit').value=s.limit||'500'; }
+  function applyQuick(kind){ clearFilterInputs(); if(kind==='monthreg'){ var n=new Date(); $('#mRegFrom').value=fmtInputDate(new Date(n.getFullYear(),n.getMonth(),1)); $('#mRegTo').value=fmtInputDate(n); $('#mSort').value='reg_desc'; } else { $('#mStatus').value=kind; } loadMembers(); }
+  function renderPresets(){ var arr=lsGet(); var wrap=$('#presetWrap'); if(!arr.length){ wrap.className='muted'; wrap.style.fontWeight='400'; wrap.textContent='暂无，调好筛选条件后点「保存当前筛选」'; return; } wrap.className=''; wrap.style.fontWeight=''; wrap.textContent=''; arr.forEach(function(p,i){ var b=document.createElement('button'); b.type='button'; b.className='chip saved'; b.appendChild(document.createTextNode(p.name)); var x=document.createElement('span'); x.className='x'; x.textContent='×'; x.title='删除'; x.onclick=function(ev){ ev.stopPropagation(); if(confirm('删除常用筛选「'+p.name+'」？')){ var a=lsGet(); a.splice(i,1); lsSet(a); renderPresets(); } }; b.appendChild(x); b.onclick=function(){ clearChipOn(); setFilterState(p.state); loadMembers(); }; wrap.appendChild(b); }); }
+  $('#mSavePreset').onclick=function(){ var nm=prompt('给这组筛选条件起个名字（例如「30天内到期·年卡」）',''); if(nm===null)return; nm=nm.trim(); if(!nm){ toast('名字不能为空'); return; } var a=lsGet(); a.push({name:nm.slice(0,20), state:memFilterState()}); if(a.length>20){ toast('最多保存 20 组，已移除最早的一组'); a.shift(); } lsSet(a); renderPresets(); toast('已保存：'+nm); };
+  document.querySelectorAll('#tab-members .chip[data-qf]').forEach(function(b){ b.onclick=function(){ clearChipOn(); b.classList.add('on'); applyQuick(b.getAttribute('data-qf')); }; });
+  ['mPlan','mStatus','mSort','mLimit','mRegFrom','mRegTo','mExpFrom','mExpTo'].forEach(function(id){ var e=$('#'+id); if(e) e.onchange=function(){ clearChipOn(); loadMembers(); }; });
+  $('#mReset').onclick=function(){ clearChipOn(); clearFilterInputs(); loadMembers(); };
+  renderPresets();
   async function memberAct(b){
     var act=b.getAttribute('data-act');
     if(act==='ext'){ var d=prompt('延期天数（可负数缩短，如 30 / 90 / 365）','30'); if(d===null)return; var r=await rpc('admin_extend',{p_user_id:b.getAttribute('data-uid'), p_days:parseInt(d,10)}); toast(r&&r.ok?('已延期至 '+fmtDate(r.expires_at)):('失败:'+((r&&r.status)||''))); loadMembers(); }
