@@ -49,6 +49,12 @@
   .btn:active{transform:scale(.98)}
   .btn svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
   .size{color:var(--muted);font-size:13px;margin-bottom:26px}
+  .partners{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;background:var(--pebble);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:24px}
+  .partners .plabel{font-size:12.5px;color:var(--muted);font-weight:700}
+  .partners a.pchip{display:inline-flex;align-items:center;justify-content:center;padding:7px 14px;border:1px solid var(--line);border-radius:10px;background:#fff;min-width:110px;min-height:44px;transition:box-shadow .18s,transform .18s}
+  .partners a.pchip:hover{box-shadow:var(--shadow-sm);transform:translateY(-1px)}
+  .partners a.pchip img{height:28px;width:auto;max-width:140px;display:block}
+  .partners .psub{font-size:11.5px;color:var(--muted);flex:1 1 100%;text-align:center}
   .sec-t{text-align:left;font-size:13px;font-weight:700;color:var(--brand);letter-spacing:1px;text-transform:uppercase;margin:0 0 10px}
   .features{text-align:left;background:var(--pebble);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin-bottom:22px}
   .features li{list-style:none;font-size:14px;line-height:1.9;color:#334155;position:relative;padding-left:26px;margin:2px 0}
@@ -86,6 +92,12 @@
 
     <a class="btn" href="./shopsage-v4.9.23.zip" download="ShopSage-v4.9.23-客户安装包.zip">下载安装包 <svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M5 21h14"/></svg></a>
     <div class="size">Windows / Chrome · 约 0.4 MB · 含使用说明</div>
+    <div class="partners">
+      <span class="plabel">已上架应用市场</span>
+      <a class="pchip" href="https://appstore.ziniao.com" target="_blank" rel="noopener"><img src="https://get.shopsage.cc/partners/ziniao.png" alt="紫鸟浏览器"></a>
+      <a class="pchip" href="https://www.zhanfubrowser.com" target="_blank" rel="noopener"><img src="https://get.shopsage.cc/partners/zhanfu.png" alt="站斧浏览器"></a>
+      <span class="psub">紫鸟 · 站斧 浏览器「插件中心 / 应用市场」搜索 ShopSage 即可一键安装</span>
+    </div>
 
     <div class="sec-t">核心能力</div>
     <ul class="features">
