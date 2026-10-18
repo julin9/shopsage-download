@@ -286,8 +286,8 @@
     var res=await q.range(0,lim-1);
     if(res.error){ MEMBERS_LAST=[]; $('#mTable').innerHTML='<tr><td class="empty">加载失败：'+esc(res.error.message||res.error.code||'未知')+'</td></tr>'; $('#mCount').textContent=''; return; }
     var rows=res.data||[]; MEMBERS_LAST=rows;
-    $('#mCount').textContent = rows.length? ('共匹配 '+rows.length+' 条'+(rows.length>=lim?'（已达显示上限 '+lim+'，请缩小筛选范围）':'')) : '';
-    if(!rows.length){ $('#mTable').innerHTML='<tr><td class="empty">没有符合条件的会员</td></tr>'; return; }
+    var countTxt = rows.length? ('共匹配 '+rows.length+' 条'+(rows.length>=lim?'（已达显示上限 '+lim+'，请缩小筛选范围）':'')) : '共匹配 0 条';
+    if(!rows.length){ $('#mTable').innerHTML='<tr><td class="empty">没有符合条件的会员</td></tr>'; $('#mCount').textContent=countTxt; return; }
     var ids=rows.map(function(r){return r.user_id;});
     var cutoff=new Date(now.getTime()-30*864e5).toISOString();
     var pair=await Promise.all([countByUser('store_usage',ids,cutoff),countByUser('device_sessions',ids,cutoff)]);
@@ -310,6 +310,7 @@
         '<td><div class="acts"><button class="btn btn-sm" data-act="ext" data-uid="'+r.user_id+'">延期</button><button class="btn btn-sm btn-ghost" data-act="stores" data-uid="'+r.user_id+'" data-cur="'+(r.max_stores||0)+'">店铺</button><button class="btn btn-sm btn-danger" data-act="tog" data-v="'+tog+'">'+(r.suspended?'解封':'冻结')+'</button></div></td></tr>';
     }).join('');
     $('#mTable').innerHTML=h+'</tbody>';
+    $('#mCount').textContent=countTxt;
     $('#mTable').querySelectorAll('[data-act]').forEach(function(b){ b.onclick=function(){ memberAct(b); }; });
     $('#mTable').querySelectorAll('th.sortable').forEach(function(th){ th.onclick=function(){ var sel=$('#mSort'); var a=th.getAttribute('data-sort'), b2=th.getAttribute('data-sort2'); sel.value=(sel.value===a)?b2:a; loadMembers(); }; });
   }
