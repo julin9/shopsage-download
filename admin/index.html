@@ -68,6 +68,10 @@
   .pt{font-weight:800;color:var(--brand-deep);margin-bottom:14px;font-size:15px;display:flex;align-items:center;gap:8px}
   .pt svg{color:var(--brand);font-size:18px}
   .acts{display:flex;gap:6px;flex-wrap:wrap}
+  th.sortable{cursor:pointer;user-select:none;white-space:nowrap}
+  th.sortable:hover{color:var(--brand)}
+  th.sortable .arw{opacity:.55;font-size:10px;margin-left:3px}
+  input[type=date]{min-width:132px}
   #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--ink);color:#fff;padding:12px 22px;border-radius:11px;font-size:14px;box-shadow:var(--shadow);opacity:0;transition:.25s;pointer-events:none;z-index:99}
   #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
   #loginWrap{max-width:400px;margin:8vh auto 0}
@@ -131,10 +135,23 @@
   <div class="tab hidden" id="tab-members">
     <div class="card">
       <div class="row">
-        <div class="f" style="flex:1"><label>搜索邮箱</label><input id="mSearch" placeholder="输入邮箱片段" /></div>
-        <button class="btn btn-sm" id="mGo">查询</button>
-        <button class="btn btn-ghost btn-sm" id="mRefresh">刷新</button>
+        <div class="f" style="flex:1;min-width:180px"><label>搜索邮箱</label><input id="mSearch" placeholder="输入邮箱片段" /></div>
+        <div class="f"><label>套餐</label><select id="mPlan"><option value="">全部套餐</option><option value="month">月卡</option><option value="quarter">季卡</option><option value="year">年卡</option><option value="shopgroup">店群年卡</option><option value="basic">基础版</option><option value="flagship">旗舰版</option><option value="boss">老板版</option><option value="legacy">终身/legacy</option></select></div>
+        <div class="f"><label>状态</label><select id="mStatus"><option value="">全部状态</option><option value="active">生效中</option><option value="exp7">即将到期 · 7天内</option><option value="exp30">即将到期 · 30天内</option><option value="expired">已过期</option><option value="lifetime">终身</option><option value="suspended">已冻结</option></select></div>
+        <div class="f"><label>排序</label><select id="mSort"><option value="exp_asc">到期：最近优先</option><option value="exp_desc">到期：最晚优先</option><option value="reg_desc">注册：最新优先</option><option value="reg_asc">注册：最早优先</option><option value="stores_desc">店铺额度：多→少</option><option value="devices_desc">设备上限：多→少</option></select></div>
       </div>
+      <div class="row">
+        <div class="f"><label>注册从</label><input id="mRegFrom" type="date" /></div>
+        <div class="f"><label>注册到</label><input id="mRegTo" type="date" /></div>
+        <div class="f"><label>到期从</label><input id="mExpFrom" type="date" /></div>
+        <div class="f"><label>到期到</label><input id="mExpTo" type="date" /></div>
+        <div class="f"><label>显示上限</label><select id="mLimit"><option value="100">100</option><option value="300">300</option><option value="500" selected>500</option><option value="1000">1000</option></select></div>
+        <button class="btn btn-sm" id="mGo">查询</button>
+        <button class="btn btn-ghost btn-sm" id="mReset">重置</button>
+        <button class="btn btn-ghost btn-sm" id="mRefresh">刷新</button>
+        <button class="btn btn-ghost btn-sm" id="mCsv">导出 CSV</button>
+      </div>
+      <div class="muted" id="mCount" style="margin-top:10px"></div>
     </div>
     <div class="card" style="padding:0;overflow:auto;max-height:70vh"><table id="mTable"></table></div>
   </div>
@@ -227,23 +244,89 @@
   }
   $('#expGo').onclick=function(){loadExpiring(false);}; $('#expCsv').onclick=function(){loadExpiring(true);};
 
+  var MEMBERS_LAST=[];
+  function dayStartIso(v){ return v? new Date(v+'T00:00:00').toISOString() : null; }
+  function dayEndIso(v){ return v? new Date(v+'T23:59:59.999').toISOString() : null; }
+  async function countByUser(table, ids, cutoff){
+    var map={}; if(!ids.length) return map; var CH=150;
+    for(var i=0;i<ids.length;i+=CH){
+      var chunk=ids.slice(i,i+CH);
+      var q=sb.from(table).select('user_id').in('user_id',chunk);
+      if(cutoff) q=q.gt('last_seen',cutoff);
+      var r=await q;
+      if(r.data) r.data.forEach(function(x){ map[x.user_id]=(map[x.user_id]||0)+1; });
+    }
+    return map;
+  }
   async function loadMembers(){
-    var st=await rpc('admin_list_memberships',{p_limit:500, p_search:$('#mSearch').value.trim()});
-    if(!st||!st.ok){ return; }
-    var rows=st.rows||[];
-    if(!rows.length){ $('#mTable').innerHTML='<tr><td class="empty">暂无会员</td></tr>'; return; }
-    var h='<thead><tr><th>邮箱</th><th>套餐</th><th>状态</th><th>到期</th><th>店铺</th><th>设备</th><th>操作</th></tr></thead><tbody>';
+    var now=new Date(), nowISO=now.toISOString();
+    var plusDays=function(n){ return new Date(now.getTime()+n*864e5).toISOString(); };
+    var q=sb.from('membership').select('user_id,email,plan,lifetime,expires_at,created_at,updated_at,suspended,max_stores,max_devices');
+    var s=($('#mSearch').value||'').trim(); if(s) q=q.ilike('email','%'+s+'%');
+    var plan=$('#mPlan').value; if(plan) q=q.eq('plan',plan);
+    var status=$('#mStatus').value;
+    if(status==='active') q=q.eq('suspended',false).or('lifetime.eq.true,expires_at.gt.'+nowISO);
+    else if(status==='exp7') q=q.eq('suspended',false).eq('lifetime',false).gt('expires_at',nowISO).lt('expires_at',plusDays(7));
+    else if(status==='exp30') q=q.eq('suspended',false).eq('lifetime',false).gt('expires_at',nowISO).lt('expires_at',plusDays(30));
+    else if(status==='expired') q=q.eq('lifetime',false).lte('expires_at',nowISO);
+    else if(status==='lifetime') q=q.eq('lifetime',true);
+    else if(status==='suspended') q=q.eq('suspended',true);
+    var rf=dayStartIso($('#mRegFrom').value); if(rf) q=q.gte('created_at',rf);
+    var rt=dayEndIso($('#mRegTo').value); if(rt) q=q.lte('created_at',rt);
+    var ef=dayStartIso($('#mExpFrom').value); if(ef) q=q.gte('expires_at',ef);
+    var et=dayEndIso($('#mExpTo').value); if(et) q=q.lte('expires_at',et);
+    var lim=Math.min(Math.max(+$('#mLimit').value||500,1),1000);
+    var sort=$('#mSort').value;
+    if(sort==='exp_desc') q=q.order('expires_at',{ascending:false,nullsFirst:false});
+    else if(sort==='reg_desc') q=q.order('created_at',{ascending:false});
+    else if(sort==='reg_asc') q=q.order('created_at',{ascending:true});
+    else if(sort==='stores_desc') q=q.order('max_stores',{ascending:false}).order('expires_at',{ascending:true,nullsFirst:false});
+    else if(sort==='devices_desc') q=q.order('max_devices',{ascending:false}).order('expires_at',{ascending:true,nullsFirst:false});
+    else q=q.order('expires_at',{ascending:true,nullsFirst:false});
+    var res=await q.range(0,lim-1);
+    if(res.error){ MEMBERS_LAST=[]; $('#mTable').innerHTML='<tr><td class="empty">加载失败：'+esc(res.error.message||res.error.code||'未知')+'</td></tr>'; $('#mCount').textContent=''; return; }
+    var rows=res.data||[]; MEMBERS_LAST=rows;
+    $('#mCount').textContent = rows.length? ('共匹配 '+rows.length+' 条'+(rows.length>=lim?'（已达显示上限 '+lim+'，请缩小筛选范围）':'')) : '';
+    if(!rows.length){ $('#mTable').innerHTML='<tr><td class="empty">没有符合条件的会员</td></tr>'; return; }
+    var ids=rows.map(function(r){return r.user_id;});
+    var cutoff=new Date(now.getTime()-30*864e5).toISOString();
+    var pair=await Promise.all([countByUser('store_usage',ids,cutoff),countByUser('device_sessions',ids,cutoff)]);
+    var suMap=pair[0], dsMap=pair[1];
+    var expArw = sort==='exp_asc'?' <span class="arw">▲</span>' : (sort==='exp_desc'?' <span class="arw">▼</span>':'');
+    var regArw = sort==='reg_desc'?' <span class="arw">▼</span>' : (sort==='reg_asc'?' <span class="arw">▲</span>':'');
+    var h='<thead><tr><th>邮箱</th><th>套餐</th><th>状态</th><th class="sortable" data-sort="exp_asc" data-sort2="exp_desc">到期'+expArw+'</th><th class="sortable" data-sort="reg_desc" data-sort2="reg_asc">注册时间'+regArw+'</th><th>店铺</th><th>设备</th><th>操作</th></tr></thead><tbody>';
     h+=rows.map(function(r){
-      var act=r.suspended?'<span class="badge off">已冻结</span>':(r.lifetime?'<span class="badge on">终身</span>':(r.active?'<span class="badge on">生效中</span>':'<span class="badge off">已过期</span>'));
+      var su=suMap[r.user_id]||0, dv=dsMap[r.user_id]||0; r._su=su; r._dv=dv;
+      var alive = !!(r.expires_at && new Date(r.expires_at)>now);
+      var act;
+      if(r.suspended) act='<span class="badge off">已冻结</span>';
+      else if(r.lifetime) act='<span class="badge on">终身</span>';
+      else if(alive) act='<span class="badge on">生效中</span>';
+      else act='<span class="badge off">已过期</span>';
       var exp=r.lifetime?'终身':fmtDate(r.expires_at);
-      var soon=(!r.lifetime && r.active && (new Date(r.expires_at)-Date.now())<7*864e5)?' <span class="badge warn">即将到期</span>':'';
+      var soon=(!r.lifetime && !r.suspended && alive && (new Date(r.expires_at)-now)<7*864e5)?' <span class="badge warn">即将到期</span>':'';
       var tog=r.suspended?('解封:'+r.user_id):('冻结:'+r.user_id);
-      return '<tr><td>'+esc(r.email)+'</td><td>'+esc(r.plan)+'</td><td>'+act+'</td><td>'+esc(exp)+soon+'</td><td class="mono">'+(r.stores_used||0)+'/'+(r.max_stores||0)+'</td><td>'+(r.devices_used||0)+'</td>'+
+      return '<tr><td>'+esc(r.email)+'</td><td>'+esc(r.plan||'-')+'</td><td>'+act+'</td><td>'+esc(exp)+soon+'</td><td>'+fmtDate(r.created_at)+'</td><td class="mono">'+su+'/'+(r.max_stores||0)+'</td><td class="mono">'+dv+'/'+(r.max_devices||0)+'</td>'+
         '<td><div class="acts"><button class="btn btn-sm" data-act="ext" data-uid="'+r.user_id+'">延期</button><button class="btn btn-sm btn-ghost" data-act="stores" data-uid="'+r.user_id+'" data-cur="'+(r.max_stores||0)+'">店铺</button><button class="btn btn-sm btn-danger" data-act="tog" data-v="'+tog+'">'+(r.suspended?'解封':'冻结')+'</button></div></td></tr>';
     }).join('');
     $('#mTable').innerHTML=h+'</tbody>';
     $('#mTable').querySelectorAll('[data-act]').forEach(function(b){ b.onclick=function(){ memberAct(b); }; });
+    $('#mTable').querySelectorAll('th.sortable').forEach(function(th){ th.onclick=function(){ var sel=$('#mSort'); var a=th.getAttribute('data-sort'), b2=th.getAttribute('data-sort2'); sel.value=(sel.value===a)?b2:a; loadMembers(); }; });
   }
+  $('#mGo').onclick=loadMembers;
+  $('#mRefresh').onclick=loadMembers;
+  $('#mReset').onclick=function(){ ['mSearch','mRegFrom','mRegTo','mExpFrom','mExpTo'].forEach(function(id){var e=$('#'+id); if(e)e.value='';}); $('#mPlan').value=''; $('#mStatus').value=''; $('#mSort').value='exp_asc'; $('#mLimit').value='500'; loadMembers(); };
+  ['mPlan','mStatus','mSort','mLimit','mRegFrom','mRegTo','mExpFrom','mExpTo'].forEach(function(id){ var e=$('#'+id); if(e) e.onchange=loadMembers; });
+  $('#mCsv').onclick=function(){
+    if(!MEMBERS_LAST.length){ toast('无数据可导出'); return; }
+    download('ShopSage-会员名单-'+new Date().toISOString().slice(0,10)+'.csv', csvOf(
+      ['邮箱','套餐','状态','到期时间','注册时间','店铺(近30天/上限)','设备(近30天/上限)'],
+      MEMBERS_LAST.map(function(r){
+        var alive=!!(r.expires_at && new Date(r.expires_at)>new Date());
+        var st=r.suspended?'已冻结':(r.lifetime?'终身':(alive?'生效中':'已过期'));
+        return [r.email,r.plan||'',st,r.lifetime?'终身':fmtDate(r.expires_at),fmtDate(r.created_at),(r._su||0)+'/'+(r.max_stores||0),(r._dv||0)+'/'+(r.max_devices||0)];
+      })));
+  };
   async function memberAct(b){
     var act=b.getAttribute('data-act');
     if(act==='ext'){ var d=prompt('延期天数（可负数缩短，如 30 / 90 / 365）','30'); if(d===null)return; var r=await rpc('admin_extend',{p_user_id:b.getAttribute('data-uid'), p_days:parseInt(d,10)}); toast(r&&r.ok?('已延期至 '+fmtDate(r.expires_at)):('失败:'+((r&&r.status)||''))); loadMembers(); }
