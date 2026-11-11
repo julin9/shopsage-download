@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="ShopSage 选品助手 V0.9.11 官方下载页 — 从 1688 / 拼多多采集商品，带回落主图组、SKU 规格进价、属性、件重尺、物流与采购量阶梯档位，同步到 ShopSage 后台采集箱，按目标市场测算运费、扣点与利润区间，服务端代跑 AI 市场分析。">
+<meta name="keywords" content="ShopSage,选品插件,1688采集,拼多多采集,跨境电商,成本利润,TikTok Shop">
+<meta name="author" content="ShopSage">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#1A6FF5">
+<title>ShopSage 选品助手 · 1688 / 拼多多采集 + 成本利润测算 · 官方下载</title>
+<link rel="icon" type="image/png" href="../logo128.png">
+<style>
+  :root{
+    --brand:#1A6FF5;--brand-deep:#0B4FD6;--brand-050:#EAF2FF;--brand-100:#D8E8FF;
+    --ink:#0B3558;--muted:#476788;--line:#D4E0ED;--bg:#F6F8FC;--pebble:#F0F3F8;--warn:#B54708;
+    --shadow:rgba(11,53,88,.05) 0 4px 8px,rgba(11,53,88,.06) 0 16px 32px -8px,rgba(11,53,88,.08) 0 36px 64px -16px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",Segoe UI,sans-serif;background:radial-gradient(900px 400px at 85% -8%,rgba(76,147,255,.12),transparent),linear-gradient(180deg,#fff,var(--bg));color:var(--ink);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:28px 18px;line-height:1.7;-webkit-font-smoothing:antialiased}
+  .card{background:#fff;border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);max-width:680px;width:100%;padding:44px 40px;text-align:center;animation:cardIn .55s cubic-bezier(.22,.61,.36,1) both}
+  @keyframes cardIn{0%{opacity:0;transform:translateY(18px)}100%{opacity:1;transform:translateY(0)}}
+  @media (prefers-reduced-motion: reduce){.card{animation:none}}
+  .brandrow{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:6px}
+  img.logo{width:56px;height:56px;border-radius:14px}
+  .wordmark{font-size:26px;font-weight:800;letter-spacing:-.3px;color:var(--ink);line-height:1.1}
+  .wordmark b{color:var(--brand)}
+  .slogan{font-size:13px;color:var(--muted);margin-bottom:18px;letter-spacing:.5px}
+  h1{font-size:22px;color:var(--ink);margin-bottom:6px;font-weight:800;letter-spacing:-.3px}
+  .sub{font-size:14px;color:var(--muted);margin-bottom:14px}
+  .ver{display:inline-block;color:var(--brand-deep);background:var(--brand-050);font-size:13px;font-weight:600;padding:5px 14px;border-radius:999px;margin-bottom:22px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--brand);color:#fff;text-decoration:none;font-size:17px;font-weight:700;padding:15px 46px;border-radius:14px;margin:2px 0 12px;box-shadow:rgba(11,53,88,.18) 0 10px 24px -10px;transition:background .18s,transform .18s}
+  .btn:hover{background:var(--brand-deep);transform:translateY(-1px)}
+  .btn:active{transform:scale(.98)}
+  .btn svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .btn.ghost{background:#fff;color:var(--brand-deep);border:1px solid var(--brand);box-shadow:none}
+  .btn.ghost:hover{background:var(--brand-050)}
+  .btnrow{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
+  .size{color:var(--muted);font-size:13px;margin-bottom:24px}
+  .sec-t{text-align:left;font-size:13px;font-weight:700;color:var(--brand);letter-spacing:1px;text-transform:uppercase;margin:0 0 10px}
+  .features{text-align:left;background:var(--pebble);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin-bottom:22px}
+  .features li{list-style:none;font-size:14px;line-height:1.9;color:#334155;position:relative;padding-left:26px;margin:2px 0}
+  .features li::before{content:"";position:absolute;left:2px;top:11px;width:14px;height:14px;border-radius:50%;background:var(--brand-050)}
+  .features li::after{content:"";position:absolute;left:6px;top:14px;width:5px;height:9px;border:2px solid var(--brand);border-top:0;border-left:0;transform:rotate(40deg)}
+  .steps{text-align:left;font-size:14px;line-height:1.95;color:var(--muted);background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px 22px;margin-bottom:14px}
+  .steps b{color:var(--brand-deep)}
+  .steps code{background:var(--pebble);border-radius:5px;padding:1px 6px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;color:var(--ink)}
+  .note{font-size:12.5px;color:var(--warn);background:#FFF7EE;border:1px solid #FBE3C4;border-radius:12px;padding:12px 16px;text-align:left;line-height:1.75;margin-bottom:14px}
+  .note b{color:var(--warn)}
+  .sibs{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;background:var(--pebble);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:22px}
+  .sibs a{font-size:13px;color:var(--brand-deep);text-decoration:none;font-weight:600;padding:6px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;min-height:36px;display:inline-flex;align-items:center}
+  .sibs a:hover{border-color:var(--brand)}
+  .sibs span{font-size:12.5px;color:var(--muted);align-self:center}
+  .foot{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-top:20px;padding-top:18px;border-top:1px solid var(--line);text-align:left}
+  .foot-left{color:var(--muted);font-size:12px;line-height:1.75}
+  .foot-qr{flex:0 0 auto;text-align:center}
+  .foot-qr img{width:96px;height:96px;display:block;border:1px solid var(--line);border-radius:12px;padding:5px;background:#fff}
+  .foot-qr span{display:block;margin-top:6px;font-size:11px;font-weight:700;color:var(--brand-deep);line-height:1.5}
+  @media(max-width:520px){.card{padding:32px 20px}h1{font-size:19px}.foot{flex-direction:column-reverse;text-align:center}.foot-left{text-align:center}.btn{padding:14px 28px;width:100%}}
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="brandrow">
+      <img class="logo" src="../logo128.png" alt="ShopSage">
+      <div class="wordmark">Shop<b>Sage</b></div>
+    </div>
+    <div class="slogan">让运营得心应手 · 跨境电商选品与刊登</div>
+
+    <h1>ShopSage 选品助手 · 官方下载</h1>
+    <div class="sub">从 1688 / 拼多多采集商品，同步到 ShopSage 后台采集箱，按目标市场测算成本与利润</div>
+    <div class="ver">V0.9.11 · 用 ShopSage 官网账号登录 · 2026-11-11</div>
+
+    <div class="btnrow">
+      <a class="btn" href="./shopsage-selection-v0.9.11.zip" download="ShopSage-选品助手-v0.9.11.zip">下载安装包 <svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M5 21h14"/></svg></a>
+      <a class="btn ghost" href="./guide.html">使用说明（详细版）</a>
+    </div>
+    <div class="size">Windows / Chrome · 约 9.5 MB · 需已注册并邮箱验证 ShopSage 官网账号</div>
+
+    <div class="sibs">
+      <span>这是「选品助手」；</span>
+      <a href="../">自动插件（提报 / 邀约 / CRM / 私信）</a>
+      <a href="./guide.html">选品助手使用说明</a>
+    </div>
+
+    <div class="sec-t">核心能力</div>
+    <ul class="features">
+      <li>1688 / 拼多多 列表页一键采集本页商品：标题、价格、主图一次拿齐，价格来源与「请核对」标记如实标出</li>
+      <li>打开详情页可采整页底稿：主图组、视频、SKU 规格表（规格名 / 进价 / 库存）、商品属性、件重尺（重量 + 长宽高）、物流运费、认证与警示、详情描述</li>
+      <li>1688 官方类目 ID（叶子 + 一级）随商品一起带回，后台不用你手抄</li>
+      <li>采购价按<b>两根轴</b>如实带回：同一链接不同规格进价不同、页面按采购量分档的价另列，促销现价与非促销原价分开存 —— 不拿最低价冒充整条链接成本</li>
+      <li>一键同步到后台「AI 商品选品 → 采集箱」；重复采集只补空着的信息，你手工改过的值不会被覆盖</li>
+      <li>后台按目标市场自动测算：运费、平台扣点、其他成本 → 单件利润区间、毛利率、ROI 与「值得测试 / 谨慎测试 / 暂不建议」判定，头条取保守档</li>
+      <li>填「预计采购量」就按对应档位算成本；不填按起订量档（最贵单价）算，并在界面写明是按哪一档算的</li>
+      <li>妙手式编辑页：改标题、目标市场、预期售价、成本口径，保存即重算利润；标题可一键翻译成目标市场语言（服务端代跑）</li>
+      <li>AI 市场分析在服务端跑：输入带成本区间与档位口径，查不到的数字如实写「未知」，不编销量、搜索量、竞品价</li>
+      <li>与官网同一枚账号令牌：会员、AI 点数、店铺归属与后台完全一致，不另造一套账号</li>
+    </ul>
+
+    <div class="sec-t">安装四步</div>
+    <div class="steps">
+      <b>1.</b> 下载并解压 zip，保留 <code>market-scout-extension</code> 文件夹位置不要移动（解压后第一层就能直接看到 <code>manifest.json</code>，选文件夹时别多进到子层）<br>
+      <b>2.</b> 浏览器地址栏输入 <code>chrome://extensions</code> 回车 → 打开右上角「开发者模式」（Edge 为 <code>edge://extensions</code>；360 / 紫鸟 / 站斧同样有这一项）<br>
+      <b>3.</b> 点「加载已解压的扩展程序」→ 选中第 1 步的 <code>market-scout-extension</code> 文件夹<br>
+      <b>4.</b> 打开 1688 或拼多多的商品列表 / 详情页，页面右侧出现「ShopSage 选品助手」面板 → 用 ShopSage 官网邮箱登录 → 点「采集本页 / 采集到选品库」→「同步到后台」<br>
+      <span style="color:var(--muted)">采完在 ShopSage 后台「AI 商品选品 → 采集箱」看成本、利润与 AI 分析结果。</span>
+    </div>
+
+    <div class="note">
+      <b>几点先说清楚，省得你以为没装上：</b>① 采集 1688 / 拼多多时，浏览器里要<b>已经登录该平台账号</b>——插件只读页面已经显示的数据，不替你操作账号、不碰你的密码；② 列表页采集只有基础信息（标题 / 价格 / 主图），要 SKU、图片组、属性、件重尺、详情描述，请<b>打开商品详情页</b>再点「采集到选品库」；③ 插件更新过之后，已经打开的网页跑的还是旧代码，请回到商品页按 <b>F5</b> 刷新（或按 Ctrl+Shift+R 硬刷新）再采集；④ 本插件负责「采集 → 测算 → 编辑 → AI 分析」，刊登发布在后台完成，这里不宣传"一键发布"；⑤ 安装包不含账号与点数，账号请在 ShopSage 官网注册并邮箱验证。
+    </div>
+
+    <div class="foot">
+      <div class="foot-left">© 2026 ShopSage · 本页面为 ShopSage 选品助手官方下载页<br>插件与官网共用同一账号体系；点数按后台价目结算</div>
+      <div class="foot-qr">
+        <img src="../key-qr.jpg" alt="购买渠道二维码">
+        <span>购买 / 续费渠道<br>扫码添加客服</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

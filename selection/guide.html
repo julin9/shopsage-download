@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="ShopSage 选品助手使用说明（详细版）— 安装加载、账号登录、1688 / 拼多多列表页与详情页采集、同步到后台采集箱、成本与利润两根轴、预计采购量与阶梯档位、编辑成稿与一键翻译、AI 市场分析、常见问题。">
+<meta name="author" content="ShopSage">
+<meta name="theme-color" content="#1A6FF5">
+<title>ShopSage 选品助手 使用说明（详细版）</title>
+<link rel="icon" type="image/png" href="../logo128.png">
+<style>
+  :root{--brand:#1A6FF5;--brand-deep:#0B4FD6;--brand-050:#EAF2FF;--line:#D4E0ED;--ink:#0B3558;--muted:#476788;--bg:#F6F8FC;--pebble:#F0F3F8;--warn:#B54708}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",Segoe UI,sans-serif;background:linear-gradient(180deg,#fff,var(--bg));color:var(--ink);line-height:1.78;-webkit-font-smoothing:antialiased}
+  .top{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.94);border-bottom:1px solid var(--line);backdrop-filter:saturate(1.4) blur(6px)}
+  .topin{max-width:900px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:12px}
+  .topin img{width:30px;height:30px;border-radius:8px}
+  .topin .wm{font-size:17px;font-weight:800;letter-spacing:-.2px}
+  .topin .wm b{color:var(--brand)}
+  .topin .acts{margin-left:auto;display:flex;gap:8px}
+  .topin a{font-size:13px;color:var(--brand-deep);text-decoration:none;border:1px solid var(--line);border-radius:9px;padding:6px 12px;background:#fff}
+  .topin a:hover{border-color:var(--brand)}
+  .wrap{max-width:900px;margin:0 auto;padding:30px 20px 80px}
+  .crumb{font-size:12.5px;color:var(--muted);margin-bottom:8px}
+  .crumb a{color:var(--brand-deep);text-decoration:none}
+  h1{font-size:28px;letter-spacing:-.4px;margin-bottom:8px}
+  .lede{font-size:14.5px;color:var(--muted);margin-bottom:20px}
+  .toc{display:flex;flex-wrap:wrap;gap:8px;background:var(--pebble);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:30px}
+  .toc a{font-size:12.8px;color:var(--brand-deep);text-decoration:none;background:#fff;border:1px solid var(--line);border-radius:8px;padding:5px 10px}
+  .toc a:hover{border-color:var(--brand)}
+  section{margin-bottom:34px}
+  h2{font-size:19px;margin-bottom:10px;padding-left:11px;border-left:4px solid var(--brand);letter-spacing:-.2px}
+  h3{font-size:15.5px;margin:16px 0 6px;color:var(--ink)}
+  p{font-size:14.5px;margin-bottom:9px;color:#334155}
+  ul,ol{margin:0 0 10px 22px;font-size:14.5px;color:#334155}
+  li{margin:4px 0}
+  code{background:var(--pebble);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.8px;color:var(--ink)}
+  b{color:var(--ink)}
+  .tip{background:var(--brand-050);border:1px solid #C9DDFF;border-radius:12px;padding:12px 15px;font-size:13.8px;color:var(--ink);margin:10px 0}
+  .warn{background:#FFF7EE;border:1px solid #FBE3C4;border-radius:12px;padding:12px 15px;font-size:13.8px;color:var(--warn);margin:10px 0}
+  .table{width:100%;border-collapse:collapse;font-size:13.6px;margin:8px 0 12px}
+  .table th,.table td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+  .table th{background:var(--pebble);font-weight:600;color:var(--ink)}
+  .table td code{font-size:12.4px}
+  .foot{border-top:1px solid var(--line);margin-top:34px;padding-top:16px;font-size:12.5px;color:var(--muted)}
+  @media(max-width:640px){h1{font-size:23px}.wrap{padding:22px 16px 60px}.topin{padding:10px 14px}}
+</style>
+</head>
+<body>
+<div class="top"><div class="topin">
+  <img src="../logo128.png" alt="ShopSage"><div class="wm">Shop<b>Sage</b> 选品助手</div>
+  <div class="acts"><a href="./">返回下载页</a><a href="https://www.shopsage.cc/selection/inbox" target="_blank" rel="noopener">后台采集箱</a></div>
+</div></div>
+
+<div class="wrap">
+  <div class="crumb"><a href="./">下载页</a> / 使用说明</div>
+  <h1>ShopSage 选品助手 使用说明（详细版）</h1>
+  <p class="lede">从 1688 / 拼多多把商品采下来 → 同步到 ShopSage 后台采集箱 → 看成本与利润 → 改成交稿 → 跑 AI 分析。当前版本 <b>V0.9.11</b>（2026-11-11）。</p>
+
+  <nav class="toc">
+    <a href="#s0">开始之前</a><a href="#s1">一、安装与加载</a><a href="#s2">二、登录</a><a href="#s3">三、列表页采集</a><a href="#s4">四、详情页整页采集</a><a href="#s5">五、同步到后台</a><a href="#s6">六、成本与利润</a><a href="#s7">七、预计采购量与阶梯档位</a><a href="#s8">八、编辑成稿与一键翻译</a><a href="#s9">九、AI 市场分析</a><a href="#s10">十、更新插件</a><a href="#s11">十一、常见问题</a><a href="#s12">十二、账号与数据</a>
+  </nav>
+
+  <section id="s0">
+    <h2>开始之前，你需要准备</h2>
+    <ul>
+      <li>一台电脑 + 一个 <b>Chromium 内核浏览器</b>：Chrome、Edge、360 安全/极速、紫鸟、站斧均可（需支持 Manifest V3，Chrome ≥ 111）。</li>
+      <li>一个 <b>ShopSage 官网账号</b>（邮箱注册 + 邮箱验证）。插件用的就是官网这枚账号，会员、AI 点数、店铺归属与后台完全一致，不另造账号、不需要单独的插件兑换码。</li>
+      <li>浏览器里<b>已登录 1688 或拼多多</b>。插件只读取页面已经显示的数据，不替你操作账号、不接触你的密码。</li>
+    </ul>
+    <div class="tip">选品助手与「ShopSage 自动插件」（自动提报 / 达人邀约 / 达人 CRM / 私信 AI）是两个独立插件，可以同时装、互不影响。</div>
+  </section>
+
+  <section id="s1">
+    <h2>一、安装与加载插件</h2>
+    <ol>
+      <li>在<a href="./">下载页</a>点「下载安装包」，得到 <code>ShopSage-选品助手-v0.9.11.zip</code>。</li>
+      <li>解压到一个<b>你会长期保留</b>的文件夹（例如桌面）。不要直接在压缩包里运行，也不要解压完就删——浏览器每次启动都要读这个文件夹。</li>
+      <li>解压后第一层就能看到 <code>manifest.json</code> 的那个文件夹叫 <code>market-scout-extension</code>。加载时选<b>这一层</b>，不要多进到子目录。</li>
+      <li>浏览器地址栏输入 <code>chrome://extensions</code> 回车（Edge 用 <code>edge://extensions</code>），打开右上角「开发者模式」。</li>
+      <li>点「加载已解压的扩展程序」→ 选中第 4 步那个文件夹。列表出现 <b>ShopSage 选品助手</b> 即安装成功。</li>
+      <li>打开 1688 或拼多多的商品列表 / 详情页，页面右侧出现「ShopSage 选品助手」面板即生效。若没出现，先按 <b>F5</b> 刷新该页面。</li>
+    </ol>
+    <div class="warn">紫鸟 / 站斧等指纹浏览器如果禁止加载扩展，请把插件文件夹放进它们的扩展目录后再启用；这一步受浏览器安全策略限制，不影响其他功能。</div>
+  </section>
+
+  <section id="s2">
+    <h2>二、登录（用官网账号）</h2>
+    <p>面板顶部点「登录」→ 用 ShopSage 官网的邮箱和密码登录；没账号就在官网注册后回来登录。登录状态过期时，插件会用官网的刷新令牌静默续期，续不上会提示你重新登录。</p>
+    <ul>
+      <li>登录只决定<b>数据进谁的采集箱</b>——不同账号之间互相看不到，包括商品原链、采购价、成本和 AI 结论。</li>
+      <li>插件不保存你的 1688 / 拼多多账号，也不代你登录任何平台。</li>
+    </ul>
+  </section>
+
+  <section id="s3">
+    <h2>三、在列表页采集（快，但只有基础信息）</h2>
+    <p>在搜索结果页 / 类目列表页点面板上的「<b>采集本页</b>」，本页可见的商品会进插件的「我的选品库」，再点「同步到后台」就进 ShopSage 采集箱。</p>
+    <table class="table">
+      <tr><th>列表页能采到</th><td>标题、价格、主图、商品链接、销量话术</td></tr>
+      <tr><th>列表页采不到</th><td>SKU 规格表、图片组、属性、件重尺、物流、详情描述</td></tr>
+    </table>
+    <p>所以列表页适合<b>批量铺候选</b>：先把一批商品收进来筛一遍，值得做的再打开详情页补全。</p>
+  </section>
+
+  <section id="s4">
+    <h2>四、在详情页采整页（推荐，成本测算靠它）</h2>
+    <p>打开某个商品的详情页（<code>detail.1688.com/offer/…</code> 或拼多多商品页），点「<b>采集到选品库</b>」。这时插件读的是页面自带的数据包，能带回：</p>
+    <ul>
+      <li><b>主图组与视频</b>（首图取主图组第一张，避免列表位抓错图）</li>
+      <li><b>SKU 规格表</b>：规格名、每个规格的进价、库存 —— 这条很关键，见第六节</li>
+      <li><b>商品属性</b>（材质、品牌、规格、下游平台、销售地区等页面给出的项）</li>
+      <li><b>件重尺</b>：重量 + 长宽高（刊登时是必填项，这里先采回来）</li>
+      <li><b>物流与运费</b>、<b>认证 / 警示文字</b>、<b>详情描述</b></li>
+      <li><b>1688 官方类目 ID</b>（叶子 + 一级），后台不用你手抄</li>
+      <li><b>价格档位</b>：页面按采购量分档的价、以及「促销现价 / 非促销原价」两套价分开存</li>
+    </ul>
+    <div class="tip">同步成功的提示里会写「整页内容：DOC·…（图 N·规格 N·属性 N…）」。如果提示「这条没有整页内容」，说明你是在列表页采的——去详情页再采一次即可补齐。</div>
+  </section>
+
+  <section id="s5">
+    <h2>五、同步到后台采集箱</h2>
+    <p>面板或「我的选品库」里点「同步到后台」，商品进入 ShopSage 官网的 <b>AI 商品选品 → 采集箱</b>（<code>/selection/inbox</code>）。</p>
+    <ul>
+      <li>同一条商品重复同步 = 更新，不会重复占位（按「账号 + 商品原链」去重）。</li>
+      <li><b>你手工改过的值永远不会被自动值覆盖</b>：重复采集只补还空着的格子。</li>
+      <li>列表页采集不会抹掉之前详情页采到的整页内容。</li>
+    </ul>
+  </section>
+
+  <section id="s6">
+    <h2>六、成本与利润：为什么是「两根轴」</h2>
+    <p>一条 1688 链接的成本不是一个数，而是两件事叠在一起：</p>
+    <table class="table">
+      <tr><th>规格轴</th><td>同一链接里不同规格进价差好几倍。实测一条宠物窝 40 个规格，进价 <code>12.8 ~ 48.8</code> 元。</td></tr>
+      <tr><th>数量轴</th><td>同一规格买得越多单价越低（页面给的阶梯档位）。有的商品页面把「促销现价」和「非促销原价」并列给出，那不是按量分档。</td></tr>
+    </table>
+    <p>后台因此这样算：</p>
+    <ol>
+      <li>成本按<b>规格区间</b>取，<b>头条利润取最贵的那个规格</b>（保守）；界面同时摊出「最好规格 ~ 最坏规格」的利润区间。</li>
+      <li>采购价只当兜底：有 SKU 进价时以 SKU 为准，不会拿「全部规格最低价」当整条链接的成本。</li>
+      <li>促销价不参与成本计算（V0.9.11 起插件会把促销现价与非促销原价分列回传）。</li>
+      <li>运费、平台综合扣点、其他成本（退货 / 广告 / 仓储，默认 10%）按你在后台填的口径计入；ROI = 利润 ÷（采购 + 运费），不含平台扣点与其他成本。</li>
+      <li>判定只有三档：<b>值得测试</b>（毛利率 ≥ 30%）/ <b>谨慎测试</b>（≥ 15%）/ <b>暂不建议</b>。</li>
+    </ol>
+    <div class="warn">汇率目前是<b>静态参考值，待校准</b>（界面会写明）。跨币种利润的绝对值请以「同一口径横向比较」为主，别当成财务数字。</div>
+  </section>
+
+  <section id="s7">
+    <h2>七、预计采购量与阶梯档位（想算准就填它）</h2>
+    <p>后台采集箱的编辑页里有一格 <b>「预计采购量（件）」</b>：</p>
+    <ul>
+      <li><b>填了</b>：按「起订量 ≤ 预计采购量」里最高的那一档取单价，界面会写「本次按 N 件命中 ≥M 件档，单价 ¥X」。</li>
+      <li><b>不填</b>：按<b>起订量档</b>（量最少、单价最高）算 —— 这是保守口径，界面也会写明是没填才这样算。</li>
+      <li><b>填的量没达起订量</b>：如实标「未达起订量，按起订量档算」，不会编一个更低的价给你。</li>
+      <li>页面同时给了规格进价与档位价、而两者不同源时，档位比例只按页面自己给的两档之比折算，并提示<b>「需按实际卖的规格复核」</b>。</li>
+      <li>页面没有按量分档（各档起订量相同）时，界面直接写「这条商品页面没给采购量档位，只按规格进价区间算成本」，不会假装有几档。</li>
+    </ul>
+    <div class="tip">这一格是<b>你手填的值</b>，插件重复采集不会覆盖它；清空它就退回「按起订量档」的保守算法。</div>
+  </section>
+
+  <section id="s8">
+    <h2>八、编辑成稿与一键翻译</h2>
+    <p>采集箱的编辑页照「采回来先改再发」的思路做：左边是原始采集信息（只读，永远不动），右边是成稿区。</p>
+    <ul>
+      <li>可改：标题、目标平台 / 国家 / 币种、预期售价、采购价、运费、扣点、其他成本、重量档、店铺类型、<b>预计采购量</b>、SKU 售卖价与库存、图片组、属性、件重尺、认证材料。</li>
+      <li><b>保存后服务端立刻按当前口径重算利润</b>，界面展示的是重算结果，不是采集那一刻的旧数。</li>
+      <li>「一键翻译」把中文标题改写成目标市场语言（服务端代跑大模型，按后台点数结算）；译文存在目标语标题栏，<b>原标题永远保留</b>。</li>
+      <li>详情描述出于安全不在后台直接渲染 1688 的 HTML，只给统计与源码折叠视图；提交平台时会按平台规则清洗。</li>
+    </ul>
+  </section>
+
+  <section id="s9">
+    <h2>九、AI 市场分析</h2>
+    <ul>
+      <li>点「跑 AI 分析」由<b>服务端</b>代跑，模型密钥不下发到浏览器；按后台点数结算，同一条商品同一天重复点只收一次。</li>
+      <li>喂给模型的输入包含：规格进价区间、页面阶梯档位、预计采购量与本次取哪一档、利润区间与判定、汇率口径，以及需要人工核对的缺口 —— <b>不是只喂一个最低价</b>。</li>
+      <li>硬规则：不得编造销量、搜索量、竞品价格；查不到的一律写「未知」并列出你要自己核实什么。结论同样只有三档。</li>
+      <li>目前<b>未接入联网搜索</b>，报告里会如实标注「联网搜索：未接入」，此时只能基于商品与成本做结构化判断。</li>
+    </ul>
+  </section>
+
+  <section id="s10">
+    <h2>十、更新插件（每次更新后必做两步）</h2>
+    <ol>
+      <li>下载新版 zip，解压<b>覆盖同一个文件夹</b>（位置别变，否则要在 <code>chrome://extensions</code> 重新加载一次）。</li>
+      <li>在 <code>chrome://extensions</code> 点 ShopSage 选品助手卡片上的「<b>重新加载</b>」图标。</li>
+      <li><b>回到已打开的 1688 / 拼多多页面按 F5</b>（切语言或改版式后建议 Ctrl+Shift+R 硬刷新）。已经打开的页面跑的还是更新前的代码，不刷新就会以为「没生效」。</li>
+    </ol>
+    <p>如果面板提示「扩展已更新，请刷新本页面后再采集」，就是第 3 步没做。</p>
+  </section>
+
+  <section id="s11">
+    <h2>十一、常见问题</h2>
+    <table class="table">
+      <tr><th>现象</th><th>原因与处理</th></tr>
+      <tr><td>同步后提示「这条没有整页内容」</td><td>这条是列表页采的。打开商品详情页再点「采集到选品库」，然后同步。</td></tr>
+      <tr><td>卡片显示「价格待核对」</td><td>页面数据价与可见价不一致（多为券后 / 活动价），或只取到页面可见价。插件会把两个值都留着，请在后台核对采购价。</td></tr>
+      <tr><td>采购价像是促销价，比规格进价低很多</td><td>旧版插件（0.9.10 及以前）会把促销现价当采购价。<b>重载 0.9.11 后重采该商品</b>即可；注意后台利润走的是规格区间成本，不会被这个低价带偏。</td></tr>
+      <tr><td>采集后后台列表没变化</td><td>没登录 / 登录过期；或点的是「采集」而不是「同步到后台」。面板会显示同步结果与编号。</td></tr>
+      <tr><td>详情页采不到 SKU / 图片</td><td>未登录 1688 / 拼多多，或页面被平台风控拦了。刷新页面、确认已登录再采；仍失败请把面板提示截图给客服，服务端会记录诊断信息。</td></tr>
+      <tr><td>后台利润显示「还没测算」</td><td>缺预期售价或采购价。填好并保存，服务端会重算；缺什么会明确列出来，不会用 0 冒充。</td></tr>
+      <tr><td>点数不足无法跑 AI / 翻译</td><td>按后台价目结算，余额不足会先拦住，不会白跑；失败会原路退点。</td></tr>
+      <tr><td>换了电脑 / 浏览器</td><td>重新加载插件并用同一个官网账号登录即可；已同步到后台的数据跟着账号走，本地「我的选品库」是浏览器本地缓存，换机需重采。</td></tr>
+    </table>
+  </section>
+
+  <section id="s12">
+    <h2>十二、账号、数据与隐私</h2>
+    <ul>
+      <li>采集数据只进<b>你自己账号（租户）</b>的采集箱，其他账号看不到；后台接口按登录令牌回查归属，不信任请求里自报的账号信息。</li>
+      <li>插件不读取、不保存你在 1688 / 拼多多的登录密码，只读取商品页面已经显示的数据。</li>
+      <li>店铺到期或注销后，采集箱与相关数据按平台的保留策略清除；买家一类的个人信息不在采集范围内。</li>
+    </ul>
+  </section>
+
+  <div class="foot">© 2026 ShopSage · ShopSage 选品助手使用说明（V0.9.11 · 2026-11-11）· <a style="color:var(--brand-deep)" href="./">返回下载页</a></div>
+</div>
+</body>
+</html>
