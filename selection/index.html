@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="ShopSage 选品助手 V0.9.13 官方下载页 — 从 1688 / 拼多多采集商品，带回落主图组、SKU 规格进价、属性、件重尺、物流与采购量阶梯档位，同步到 ShopSage 后台采集箱，按目标市场测算运费、扣点与利润区间，服务端代跑 AI 市场分析。">
+<meta name="description" content="ShopSage 选品助手 V0.9.15 官方下载页 — 从 1688 / 拼多多采集商品，带回落主图组、SKU 规格进价、属性、件重尺、物流与采购量阶梯档位，同步到 ShopSage 后台采集箱，按目标市场测算运费、扣点与利润区间，服务端代跑 AI 市场分析。">
 <meta name="keywords" content="ShopSage,选品插件,1688采集,拼多多采集,跨境电商,成本利润,TikTok Shop">
 <meta name="author" content="ShopSage">
 <meta name="robots" content="index,follow">
@@ -69,11 +69,11 @@
 
     <h1>ShopSage 选品助手 · 官方下载</h1>
     <div class="sub">从 1688 / 拼多多采集商品，同步到 ShopSage 后台采集箱，按目标市场测算成本与利润</div>
-    <div class="ver">V0.9.13 · 用 ShopSage 官网账号登录 · 2026-11-13</div>
+    <div class="ver">V0.9.15 · 用 ShopSage 官网账号登录 · 2026-11-13</div>
 
     <div class="btnrow">
-      <a class="btn" href="https://julin9.github.io/shopsage-download/selection/shopsage-selection-v0.9.13.zip" download="ShopSage-选品助手-v0.9.13.zip">高速下载（推荐） <svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M5 21h14"/></svg></a>
-      <a class="btn ghost" href="https://get.shopsage.cc/selection/shopsage-selection-v0.9.13.zip" download="ShopSage-选品助手-v0.9.13.zip">境内备用下载</a>
+      <a class="btn" href="https://julin9.github.io/shopsage-download/selection/shopsage-selection-v0.9.15.zip" download="ShopSage-选品助手-v0.9.15.zip">高速下载（推荐） <svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M5 21h14"/></svg></a>
+      <a class="btn ghost" href="https://get.shopsage.cc/selection/shopsage-selection-v0.9.15.zip" download="ShopSage-选品助手-v0.9.15.zip">境内备用下载</a>
       <a class="btn ghost" href="./guide.html">使用说明（详细版）</a>
     </div>
     <div class="size">Windows / Chrome · 约 9.5 MB · 需已注册并邮箱验证 ShopSage 官网账号 · 两个下载按钮是同一个安装包（MD5 一致），GitHub 慢或打不开时用境内备用</div>
@@ -92,6 +92,8 @@
       <li>采购价按<b>两根轴</b>如实带回：同一链接不同规格进价不同、页面按采购量分档的价另列，促销现价与非促销原价分开存 —— 不拿最低价冒充整条链接成本</li>
       <li>一键同步到后台「AI 商品选品 → 采集箱」；重复采集只补空着的信息，你手工改过的值不会被覆盖</li>
       <li>条目归属绑定（V0.9.12 起）：在哪个账号下采集就归属哪个账号，换账号登录后旧条目不会被同步进新账号，双端校验、归属不符直接拒绝</li>
+      <li>换电脑登录（V0.9.14 起）：在已登录的那台点「获取登录码」拿到 8 位码，新电脑的插件登录框里输入即可登录，不再依赖「网页能不能联系到本机插件」；选品库按采集账号分区，A 账号采的不会出现在 B 账号里</li>
+      <li>拼多多整页采集修复（V0.9.15 起）：插件的页面取数器只在页面加载那一刻注入，插件安装/更新前就开着的拼多多标签页里没有它，于是「拼多多完全采不到信息」。现在采不到会自动补挂取数器并重载该页一次再采（同一页只自动重载一次），并把「页面有价却报未取到价格」这类口径矛盾一并修正</li>
       <li>标题多源兜底与探针（V0.9.13 起）：按 og:title → itemprop → meta → h1 → JSON-LD 依次取标题；整页只要有图片 / SKU / 属性 / 详情图 / 描述就不再因缺标题被判空，销量来源与评论数一并带回</li>
       <li>后台按目标市场自动测算：运费、平台扣点、其他成本 → 单件利润区间、毛利率、ROI 与「值得测试 / 谨慎测试 / 暂不建议」判定，头条取保守档</li>
       <li>填「预计采购量」就按对应档位算成本；不填按起订量档（最贵单价）算，并在界面写明是按哪一档算的</li>
