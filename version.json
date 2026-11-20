@@ -1,10 +1,19 @@
 {
-  "version": "4.9.32",
+  "version": "4.9.33",
   "min_version": "4.2.0",
   "url": "https://julin9.github.io/shopsage-download/",
   "notice": "本次更新：修复已知 Bug，提升运行稳定性。",
   "notes": "修复已知 Bug，建议更新后继续使用。",
   "changelog": [
+    {
+      "version": "4.9.33",
+      "date": "2026-11-20",
+      "items": [
+        "修复：紫鸟 / 站斧 安装包结构问题导致安装后插件不显示，现已按浏览器标准结构重新打包",
+        "修复已知 Bug，提升自动提报与账号校验稳定性",
+        "包含此前版本的全部修复"
+      ]
+    },
     {
       "version": "4.9.32",
       "date": "2026-11-18",
